@@ -1,1 +1,1740 @@
-<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>PDF 다이어트 스튜디오 Pro</title><script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script><script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script><style>@import url(https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css);body{font-family:Pretendard,-apple-system,BlinkMacSystemFont,system-ui,Roboto,sans-serif}.drag-active{border-color:#4f46e5!important;background-color:#eef2ff!important}.preview-scroll::-webkit-scrollbar{width:8px;height:8px}.preview-scroll::-webkit-scrollbar-track{background:#f1f5f9;border-radius:6px}.preview-scroll::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:6px}.preview-scroll::-webkit-scrollbar-thumb:hover{background:#94a3b8}</style></head><body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col"><header class="bg-white border-b border-slate-200 sticky top-0 z-20"><div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-sm"><i data-lucide="file-down" class="w-6 h-6"></i></div><div><h1 class="text-lg font-bold text-slate-900">PDF 다이어트 스튜디오 Pro</h1><p class="text-xs text-slate-500">파일 서버 전송 없이 이 브라우저에서만 작동하는 PDF 압축 프로그램!</p></div></div><div class="flex items-center gap-2 text-xs font-semibold bg-indigo-50 text-indigo-700 px-3 py-1.5 rounded-full border border-indigo-200"><i data-lucide="code" class="w-4 h-4"></i> <span>Made By H.S.Park</span></div></div></header><main class="max-w-6xl mx-auto w-full px-6 py-8 flex-1 space-y-8"><div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch"><div class="lg:col-span-7 space-y-6 flex flex-col"><section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200"><div class="flex items-center justify-between mb-4"><h2 class="text-base font-bold text-slate-900 flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 text-xs flex items-center justify-center font-bold">1</span> PDF 파일 선택</h2><span id="fileStatusBadge" class="hidden text-xs px-2.5 py-1 rounded-md bg-slate-100 text-slate-600 font-medium">대기 중</span></div><div id="dropZone" class="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center transition-all cursor-pointer hover:border-indigo-500 hover:bg-slate-50/80"><input type="file" id="fileInput" accept="application/pdf" class="hidden"/><div id="uploadPrompt" class="space-y-3"><div class="w-12 h-12 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto"><i data-lucide="upload-cloud" class="w-6 h-6"></i></div><div><p class="text-sm font-semibold text-slate-700">클릭하여 PDF를 선택하거나 이곳에 끌어다 놓으세요</p><p class="text-xs text-slate-400 mt-1">파일을 올리면 실시간 예상 용량과 화질 비교 기능을 바로 활용할 수 있습니다</p></div></div><div id="fileInfoBox" class="hidden text-left bg-slate-50 p-4 rounded-xl border border-slate-200 flex items-center justify-between"><div class="flex items-center gap-3 overflow-hidden"><div class="w-10 h-10 rounded-lg bg-red-100 text-red-600 flex items-center justify-center shrink-0"><i data-lucide="file-text" class="w-5 h-5"></i></div><div class="truncate"><p id="fileNameText" class="text-sm font-bold text-slate-800 truncate">sample.pdf</p><div class="flex items-center gap-3 text-xs text-slate-500 mt-0.5"><span id="fileSizeText">0 MB</span> <span>•</span> <span id="filePagesText">페이지 분석 중...</span></div></div></div><button id="removeFileBtn" type="button" class="text-slate-400 hover:text-red-500 p-1.5 rounded-lg hover:bg-white transition" title="파일 변경"><i data-lucide="x" class="w-5 h-5"></i></button></div></div></section><section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200"><div class="flex items-center justify-between mb-4"><h2 class="text-base font-bold text-slate-900 flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 text-xs flex items-center justify-center font-bold">2</span> 압축 방식 선택</h2><span id="recommendBadge" class="hidden text-xs font-semibold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full"></span></div><div class="space-y-3" id="engineSelector"><label class="block cursor-pointer"><input type="radio" name="engineMode" value="FAST_PDFLIB" class="peer sr-only" checked="checked"/><div class="p-4 rounded-xl border-2 border-slate-200 peer-checked:border-indigo-600 peer-checked:bg-indigo-50/40 transition hover:bg-slate-50"><div class="flex items-start justify-between gap-2"><div class="flex items-center gap-2.5"><span class="text-lg">⚡</span><div><p class="text-sm font-bold text-slate-900">표준 압축 · 글자 유지 <span class="text-indigo-600">(권장)</span></p><p class="text-xs text-slate-500 mt-0.5">사진만 골라 다시 압축하고 글자·도형·링크는 그대로 둡니다. 색이 달라지면 자동으로 안전 모드로 다시 시도합니다.</p></div></div><span class="text-[11px] font-semibold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 shrink-0">텍스트 유지</span></div></div></label> <label class="block cursor-pointer"><input type="radio" name="engineMode" value="EXTREME_RASTER" class="peer sr-only"/><div class="p-4 rounded-xl border-2 border-slate-200 peer-checked:border-indigo-600 peer-checked:bg-indigo-50/40 transition hover:bg-slate-50"><div class="flex items-start justify-between gap-2"><div class="flex items-center gap-2.5"><span class="text-lg">🔒</span><div><p class="text-sm font-bold text-slate-900">최대 압축 · 쪽 전체 이미지화</p><p class="text-xs text-slate-500 mt-0.5">모든 쪽을 그림으로 바꿔 가장 작게 만듭니다. 글자 검색·복사는 되지 않습니다.</p></div></div><span class="text-[11px] font-semibold px-2 py-0.5 rounded bg-amber-100 text-amber-800 shrink-0">통이미지 변환</span></div></div></label><details class="rounded-xl border border-slate-200 bg-slate-50/50"><summary class="cursor-pointer select-none px-4 py-2.5 text-xs font-semibold text-slate-600">고급 옵션</summary><div class="p-3 pt-0"><label class="block cursor-pointer"><input type="radio" name="engineMode" value="DEEP_GS_WASM" class="peer sr-only"/><div class="p-4 rounded-xl border-2 border-slate-200 bg-white peer-checked:border-indigo-600 peer-checked:bg-indigo-50/40 transition hover:bg-slate-50"><div class="flex items-start justify-between gap-2"><div class="flex items-center gap-2.5"><span class="text-lg">💎</span><div><p class="text-sm font-bold text-slate-900">정밀 압축 · Ghostscript WASM</p><p class="text-xs text-slate-500 mt-0.5">WebAssembly 엔진으로 폰트와 이미지를 함께 정리합니다. 불러오지 못하면 표준 압축으로 대체하고 그 사유를 결과에 표시합니다.</p></div></div><span class="text-[11px] font-semibold px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 shrink-0">실험적</span></div></div></label></div></details></div><div id="rasterWarning" class="hidden mt-3 p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-xs flex items-start gap-2"><i data-lucide="alert-triangle" class="w-4 h-4 shrink-0 mt-0.5 text-amber-600"></i><div><strong>주의:</strong> 페이지 전체 이미지화 모드를 사용하면 결과 PDF에서 <strong>텍스트 드래그(복사) 및 검색이 불가능</strong>해집니다.</div></div></section><section class="bg-indigo-950 text-white rounded-2xl p-6 shadow-sm border border-indigo-900 space-y-4 flex-1 flex flex-col justify-between"><div><h3 class="text-sm font-bold flex items-center gap-1.5"><i data-lucide="split-square-horizontal" class="w-4 h-4 text-indigo-300"></i> 원본 · 압축본 화질 비교 미리보기</h3><p class="text-xs text-indigo-200 mt-1 leading-relaxed">선택한 1개 페이지를 현재 설정으로 빠르게 압축하여 원본과 압축본의 화질을 나란히 비교합니다.</p></div><div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 pt-1"><div class="flex items-center gap-2 bg-indigo-950/80 border border-indigo-700/80 rounded-xl px-3 py-2 shrink-0"><label for="previewPageSelect" class="text-xs text-indigo-200 font-medium whitespace-nowrap">비교 페이지:</label> <select id="previewPageSelect" disabled="disabled" class="bg-transparent text-white text-xs font-bold focus:outline-none cursor-pointer disabled:opacity-50"><option value="1" class="text-slate-900">1 페이지 (기본)</option></select></div><button id="comparePreviewBtn" type="button" disabled="disabled" class="flex-1 py-2.5 px-4 rounded-xl bg-indigo-500 hover:bg-indigo-400 disabled:bg-indigo-900/60 disabled:text-indigo-400 disabled:cursor-not-allowed text-white font-semibold text-xs transition flex items-center justify-center gap-1.5 shadow-sm"><i data-lucide="eye" class="w-4 h-4"></i> <span>비교 미리보기 실행</span></button></div></section></div><div class="lg:col-span-5 space-y-6 flex flex-col"><section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-5"><div class="flex items-center justify-between"><h2 class="text-base font-bold text-slate-900 flex items-center gap-2"><i data-lucide="bar-chart-3" class="w-5 h-5 text-indigo-600"></i> 예상 용량 및 압축 결과</h2><span class="text-[11px] font-semibold px-2.5 py-1 rounded bg-indigo-50 text-indigo-600 border border-indigo-200">실시간 예측</span></div><div class="grid grid-cols-3 gap-2"><div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-center"><p class="text-[10px] text-slate-400 font-medium">원본 용량</p><p id="origSizeMetric" class="text-sm font-extrabold text-slate-700 mt-1">-</p></div><div class="p-3 rounded-xl bg-amber-50/70 border border-amber-200 text-center"><p class="text-[10px] text-amber-700 font-semibold">예상 압축본</p><p id="estSizeMetric" class="text-sm font-extrabold text-amber-800 mt-1">-</p><p id="estRatioSub" class="text-[9px] text-amber-600 font-medium mt-0.5">조건 변경 시 즉시</p></div><div class="p-3 rounded-xl bg-indigo-50/60 border border-indigo-200 text-center"><p class="text-[10px] text-indigo-600 font-medium">실제 압축결과</p><p id="compSizeMetric" class="text-sm font-extrabold text-indigo-700 mt-1">-</p><p id="compRatioSub" class="text-[9px] text-indigo-500 font-medium mt-0.5">실행 후 확정</p></div></div><div id="resultSummaryBox" class="hidden p-4 rounded-xl bg-emerald-50 border border-emerald-200"><p class="text-xs font-semibold text-emerald-800">최종 절감된 용량</p><p id="savedBadgeText" class="text-lg font-black text-emerald-700 mt-0.5">0% 감소</p><p id="engineReportText" class="text-[11px] text-emerald-800/80 mt-1.5 leading-relaxed"></p><p id="resultHintText" class="hidden text-[11px] text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-2.5 py-1.5 mt-2 leading-relaxed">💡 더 줄이려면 "최대 압축"을 선택하세요. 단, 글자가 이미지로 바뀌어 검색·복사가 되지 않습니다.</p></div></section><div class="flex-1 flex items-center justify-center py-1"><img src="logo.png" alt="PDF Diet Pro Logo" class="max-h-32 w-auto object-contain mix-blend-multiply"/></div><section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200"><div class="flex items-center justify-between mb-4"><h2 class="text-base font-bold text-slate-900 flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 text-xs flex items-center justify-center font-bold">3</span> 세부 압축 옵션 설정</h2><span id="engineRuleNotice" class="text-[10px] font-medium text-indigo-600 bg-indigo-50 px-2 py-1 rounded-md">고급 최적화 자동 적용 중</span></div><div class="space-y-4"><div id="qualityWrapper" class="bg-slate-50 p-4 rounded-xl border border-slate-200 transition-all"><div class="flex justify-between items-center mb-2"><label for="qualityInput" class="text-xs font-bold text-slate-700">JPEG 이미지 품질</label> <span id="qualityValueLabel" class="text-xs font-bold text-indigo-600">70% (권장)</span></div><input id="qualityInput" type="range" min="20" max="95" step="5" value="70" class="w-full accent-indigo-600 cursor-pointer"/><div class="flex justify-between text-[11px] text-slate-400 mt-1"><span>최대 압축 (20%)</span> <span>고화질 (95%)</span></div></div><div id="dpiWrapper" class="bg-slate-50 p-4 rounded-xl border border-slate-200 transition-all"><div class="flex justify-between items-center mb-2"><label for="dpiInput" class="text-xs font-bold text-slate-700">목표 해상도 (DPI)</label> <span id="dpiValueLabel" class="text-xs font-bold text-indigo-600">150 DPI (웹/화면용)</span></div><select id="dpiInput" class="w-full mt-1 bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-medium text-slate-700 focus:outline-none focus:border-indigo-600"><option value="72">72 DPI — 최소 용량 (모바일/열람용)</option><option value="150" selected="selected">150 DPI — 표준 균형 (일반 문서 권장)</option><option value="220">220 DPI — 고화질 유지 (화면 + 간단한 인쇄)</option><option value="300">300 DPI — 인쇄용 (시험지·인쇄물)</option></select></div></div><div class="mt-5"><div class="flex justify-between text-xs font-medium text-slate-600 mb-1.5"><span id="progressStatusText">파일을 업로드해 주세요</span> <span id="progressPercentText">0%</span></div><div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden"><div id="progressBar" class="h-full bg-indigo-600 transition-all duration-300 w-0"></div></div></div><div class="mt-4 grid grid-cols-2 gap-3"><button id="compressBtn" disabled="disabled" class="py-3.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-bold text-sm shadow-sm transition flex items-center justify-center gap-2"><i data-lucide="zap" class="w-4 h-4"></i> <span>PDF 용량 줄이기</span></button> <a id="downloadLink" href="#" download="compressed.pdf" aria-disabled="true" tabindex="-1" class="py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-sm transition flex items-center justify-center gap-2 opacity-40 pointer-events-none"><i data-lucide="download" class="w-4 h-4"></i> <span>압축 PDF 다운로드</span></a></div></section></div></div><section id="comparisonViewerSection" class="hidden bg-white rounded-2xl p-6 shadow-sm border border-slate-200"><div class="flex flex-wrap items-center justify-between gap-4 pb-4 mb-5 border-b border-slate-200"><div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center"><i data-lucide="columns" class="w-4 h-4"></i></div><div><h2 class="text-base font-bold text-slate-900">원본 vs 압축본 화질 나란히 비교</h2><p id="comparisonSubTitle" class="text-xs text-slate-500">선택한 페이지를 렌더링하여 글자 선명도와 이미지 화질 열화를 비교합니다</p></div></div><div class="flex flex-wrap items-center gap-3"><label class="flex items-center gap-1.5 text-xs text-slate-600 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg"><input type="checkbox" id="syncScrollCheck" checked="checked" class="rounded text-indigo-600"/> <span>스크롤 동기화</span></label><div class="flex items-center gap-1 bg-slate-100 p-1 rounded-lg text-xs font-semibold"><button type="button" data-zoom="1" class="zoom-btn px-2.5 py-1 rounded-md bg-white text-indigo-600 shadow-sm">100%</button> <button type="button" data-zoom="1.5" class="zoom-btn px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900">150%</button> <button type="button" data-zoom="2" class="zoom-btn px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900">200% (확대)</button></div><button id="closeComparisonBtn" type="button" class="text-xs text-slate-500 hover:text-slate-800 px-2.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 flex items-center gap-1"><i data-lucide="x" class="w-3.5 h-3.5"></i> <span>닫기</span></button></div></div><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div class="flex flex-col rounded-xl border-2 border-slate-200 bg-slate-50 overflow-hidden"><div class="px-4 py-3 bg-white border-b border-slate-200 flex items-center justify-between"><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-slate-500"></span> <span id="origPreviewHeaderLabel" class="text-sm font-extrabold text-slate-800">원본 (0 MB)</span></div><span id="origPageBadge" class="text-[11px] font-medium text-slate-500 bg-slate-100 px-2 py-0.5 rounded">1 페이지 원본 화질</span></div><div id="origScrollContainer" class="preview-scroll overflow-auto h-[520px] p-4 flex items-start justify-center bg-slate-200/60"><canvas id="origPreviewCanvas" class="bg-white shadow-md rounded"></canvas></div></div><div class="flex flex-col rounded-xl border-2 border-indigo-300 bg-indigo-50/20 overflow-hidden"><div class="px-4 py-3 bg-white border-b border-indigo-200 flex items-center justify-between"><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span> <span id="compPreviewHeaderLabel" class="text-sm font-extrabold text-indigo-700">압축본 (예상 0 MB)</span></div><span id="compPageBadge" class="text-[11px] font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded">현재 설정 적용됨</span></div><div id="compScrollContainer" class="preview-scroll overflow-auto h-[520px] p-4 flex items-start justify-center bg-slate-200/60"><canvas id="compPreviewCanvas" class="bg-white shadow-md rounded"></canvas></div></div></div></section></main><script>lucide.createIcons(),window.pdfjsLib&&(pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js");const PDFJS_OPTS={cMapUrl:"https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/cmaps/",cMapPacked:!0,standardFontDataUrl:"https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/standard_fonts/"};let currentFile=null,currentBuffer=null,totalPages=0,currentDownloadUrl=null,currentZoom=1,pdfStats={totalBytes:0,imageStreamBytes:0,imageCount:0,otherStreamBytes:0,overheadBytes:0,measuredSampleRatio:null};const dropZone=document.getElementById("dropZone"),fileInput=document.getElementById("fileInput"),uploadPrompt=document.getElementById("uploadPrompt"),fileInfoBox=document.getElementById("fileInfoBox"),fileNameText=document.getElementById("fileNameText"),fileSizeText=document.getElementById("fileSizeText"),filePagesText=document.getElementById("filePagesText"),removeFileBtn=document.getElementById("removeFileBtn"),fileStatusBadge=document.getElementById("fileStatusBadge"),recommendBadge=document.getElementById("recommendBadge"),rasterWarning=document.getElementById("rasterWarning"),qualityInput=document.getElementById("qualityInput"),qualityValueLabel=document.getElementById("qualityValueLabel"),dpiInput=document.getElementById("dpiInput"),dpiValueLabel=document.getElementById("dpiValueLabel"),qualityWrapper=document.getElementById("qualityWrapper"),dpiWrapper=document.getElementById("dpiWrapper"),engineRuleNotice=document.getElementById("engineRuleNotice"),compressBtn=document.getElementById("compressBtn"),progressStatusText=document.getElementById("progressStatusText"),progressPercentText=document.getElementById("progressPercentText"),progressBar=document.getElementById("progressBar"),origSizeMetric=document.getElementById("origSizeMetric"),estSizeMetric=document.getElementById("estSizeMetric"),estRatioSub=document.getElementById("estRatioSub"),compSizeMetric=document.getElementById("compSizeMetric"),compRatioSub=document.getElementById("compRatioSub"),resultSummaryBox=document.getElementById("resultSummaryBox"),engineReportText=document.getElementById("engineReportText"),resultHintText=document.getElementById("resultHintText"),savedBadgeText=document.getElementById("savedBadgeText"),downloadLink=document.getElementById("downloadLink");function setDownloadEnabled(e){downloadLink.classList.toggle("opacity-40",!e),downloadLink.classList.toggle("pointer-events-none",!e),downloadLink.setAttribute("aria-disabled",String(!e)),downloadLink.tabIndex=e?0:-1}const previewPageSelect=document.getElementById("previewPageSelect"),comparePreviewBtn=document.getElementById("comparePreviewBtn"),comparisonViewerSection=document.getElementById("comparisonViewerSection"),closeComparisonBtn=document.getElementById("closeComparisonBtn"),origPreviewHeaderLabel=document.getElementById("origPreviewHeaderLabel"),compPreviewHeaderLabel=document.getElementById("compPreviewHeaderLabel"),origPageBadge=document.getElementById("origPageBadge"),compPageBadge=document.getElementById("compPageBadge"),origPreviewCanvas=document.getElementById("origPreviewCanvas"),compPreviewCanvas=document.getElementById("compPreviewCanvas"),origScrollContainer=document.getElementById("origScrollContainer"),compScrollContainer=document.getElementById("compScrollContainer"),syncScrollCheck=document.getElementById("syncScrollCheck");function formatBytes(e){if(!e||e<=0)return"0 B";const t=Math.floor(Math.log(e)/Math.log(1024));return parseFloat((e/Math.pow(1024,t)).toFixed(2))+" "+["B","KB","MB","GB"][t]}function setProgress(e,t){const n=Math.max(0,Math.min(100,Math.round(e)));progressBar.style.width=`${n}%`,progressPercentText.textContent=`${n}%`,t&&(progressStatusText.textContent=t)}function getCurrentOptions(){const e=document.querySelector('input[name="engineMode"]:checked');return{mode:e?e.value:"FAST_PDFLIB",quality:parseInt(qualityInput.value,10)/100,dpi:parseInt(dpiInput.value,10)}}function updateEngineOptionStates(){const e=getCurrentOptions().mode;"FAST_PDFLIB"===e?(setControlEnabled(qualityInput,qualityWrapper,!0),setControlEnabled(dpiInput,dpiWrapper,!0),engineRuleNotice.textContent="표준 압축: 사진 화질·해상도 적용"):"DEEP_GS_WASM"===e?(setControlEnabled(qualityInput,qualityWrapper,!0),setControlEnabled(dpiInput,dpiWrapper,!0),engineRuleNotice.textContent="정밀 압축: 해상도 프리셋 적용 (고급)"):"EXTREME_RASTER"===e&&(setControlEnabled(qualityInput,qualityWrapper,!0),setControlEnabled(dpiInput,dpiWrapper,!0),engineRuleNotice.textContent="최대 압축: 쪽 전체 이미지 화질·해상도")}function setControlEnabled(e,t,n){e.disabled=!n,n?(t.classList.remove("opacity-40","bg-slate-100"),t.classList.add("bg-slate-50")):(t.classList.add("opacity-40","bg-slate-100"),t.classList.remove("bg-slate-50"))}function calculateEstimatedSizeBytes(){if(!currentBuffer||0===pdfStats.totalBytes)return 0;const e=getCurrentOptions(),t=pdfStats.totalBytes,n=pdfStats.imageStreamBytes,a=Math.max(0,t-n),o=Math.min(1,Math.pow(e.dpi/200,2)),r=Math.pow(e.quality,1.55);let i=t;if("FAST_PDFLIB"===e.mode)if(n>0){i=n*Math.min(.95,o*r*1.35+.08)+a*(.92*.9)}else{const n=.93*t*.9,a=145e3*totalPages*Math.pow(e.dpi/150,2)*r;i=Math.min(n,a)}else if("DEEP_GS_WASM"===e.mode){i=n*Math.min(.9,o*r*1.15+.06)+a*Math.min(.9,.48+(e.dpi-72)/228*.4)}else if("EXTREME_RASTER"===e.mode){const n=175e3*Math.pow(e.dpi/150,2),a=totalPages*n*(.35+.85*r);i=Math.min(t*o*(.4+.7*r),a)}return i=Math.min(t,i),Math.max(8192,Math.round(i))}function updateRealTimeEstimateUI(){if(!currentBuffer||!currentFile)return estSizeMetric.textContent="-",void(estRatioSub.textContent="조건 변경 시 자동 계산");const e=currentBuffer.byteLength,t=getBestEstimate(),n=t.bytes,a=Math.max(0,e-n),o=e>0?(a/e*100).toFixed(1):"0.0";estSizeMetric.textContent=`약 ${formatBytes(n)}`,t.measured?estRatioSub.textContent=a>0?`-${o}% · ${t.note}`:`이미 최적화됨 · ${t.note}`:estRatioSub.textContent="실측 계산 중…",origPreviewHeaderLabel.textContent=`원본 (${formatBytes(e)})`,compPreviewHeaderLabel.textContent=`압축본 (예상 약 ${formatBytes(n)} / -${o}%)`}const estState={fileKey:0,structure:null,structureP:null,results:new Map,timer:null,runId:0},estimateKey=e=>`${e.mode}|${e.quality}|${e.dpi}`;function resetMeasuredEstimate(){estState.fileKey++,estState.structure=null,estState.structureP=null,estState.results.clear(),clearTimeout(estState.timer)}function getBestEstimate(){const e=currentBuffer?estState.results.get(estimateKey(getCurrentOptions())):null;return e?{bytes:e.bytes,measured:!0,note:e.note}:{bytes:calculateEstimatedSizeBytes(),measured:!1}}function getStructureInfo(){if(estState.structure)return Promise.resolve(estState.structure);if(estState.structureP)return estState.structureP;const e=currentBuffer,t=estState.fileKey,n=(async()=>{const t=await PDFLib.PDFDocument.load(e.slice(0),{ignoreEncryption:!0});t.setTitle(""),t.setAuthor(""),t.setSubject(""),t.setKeywords([]),t.setProducer(""),t.setCreator("");const n=await PDFLib.PDFDocument.create();(await n.copyPages(t,t.getPageIndices())).forEach(e=>n.addPage(e));const a=await n.save({useObjectStreams:!0,addDefaultPage:!1}),o=collectImageInfos(n,!0);return{size:a.byteLength,images:o.images.filter(e=>e.route),maxSide:o.maxSide,doc:n}})();return estState.structureP=n,n.then(e=>(t===estState.fileKey&&(estState.structure=e,estState.structureP=null),e),e=>{throw t===estState.fileKey&&(estState.structureP=null),e})}async function measureEngine1(e,t){const n=await getStructureInfo();if(t())return null;const a=[...n.images].sort((e,t)=>e.len-t.len),o=a.reduce((e,t)=>e+t.len,0),r=[];let i=[],s=0,c=1;for(const e of a)if(i.push(e),s+=e.len,c<10&&s>=o*c/10)for(r.push(i),i=[];c<10&&s>=o*c/10;)c++;i.length&&r.push(i);let l=12345;const d=()=>(l=(1103515245*l+12345)%2147483648)/2147483648,u=r.map(e=>{const t=[...e];for(let e=t.length-1;e>0;e--){const n=Math.floor(d()*(e+1));[t[e],t[n]]=[t[n],t[e]]}return{order:t,bytes:e.reduce((e,t)=>e+t.len,0),next:0,mBytes:0,mSaved:0}}),m=performance.now();let g=0;for(let a=0;;a++){let o=!1;for(const r of u){if(r.next>=r.order.length)continue;if(a>0&&performance.now()-m>4e3)break;if(t())return null;const i=r.order[r.next++];let s=0;try{const t=scaleForTargetDpi(i.W,i.H,i.place,e.dpi,n.maxSide),a=await recompressImage(n.doc,i,e.quality,t,!1);a&&(s=1-a.bytes.length/i.len)}catch(e){}r.mBytes+=i.len,r.mSaved+=i.len*s,g++,o=!0}if(!o||performance.now()-m>4e3)break}const p=u.reduce((e,t)=>e+(t.mBytes?t.bytes*t.mSaved/t.mBytes:0),0);return{bytes:Math.max(8192,Math.round(n.size-p)),note:a.length?g===a.length?`이미지 ${g}개 모두 실측`:`이미지 ${g}/${a.length}개 실측`:"구조 정리 실측"}}async function measureEngine3(e,t){const n=await pdfjsLib.getDocument({data:currentBuffer.slice(0),...PDFJS_OPTS}).promise;try{const a=n.numPages,o=[...new Set([0,1,2,3,4].map(e=>1+Math.round(e*(a-1)/4)))],r=e.dpi/72;let i=0;for(const a of o){if(t())return null;const o=await n.getPage(a),s=await renderPageToNewCanvas(o,o.getViewport({scale:r})),c=s.toDataURL("image/jpeg",e.quality);i+=Math.round(3*c.split(",")[1].length/4),s.width=s.height=0,o.cleanup()}return{bytes:Math.round(i/o.length*a+2e3+500*a),note:`${o.length}쪽 실측`}}finally{n.destroy()}}async function measureEstimate(e,t){const n=currentBuffer.byteLength;let a;return"EXTREME_RASTER"===e.mode?a=await measureEngine3(e,t):(a=await measureEngine1(e,t),a&&"DEEP_GS_WASM"===e.mode&&(a.note+=" · 표준 압축 기준")),a?{bytes:Math.min(n,a.bytes),note:a.note}:null}function scheduleMeasuredEstimate(){if(clearTimeout(estState.timer),!currentBuffer)return;const e=getCurrentOptions(),t=estimateKey(e);estState.results.has(t)?updateRealTimeEstimateUI():estState.timer=setTimeout(async()=>{const n=++estState.runId,a=estState.fileKey,o=()=>n!==estState.runId||a!==estState.fileKey;try{const n=await measureEstimate(e,o);if(!n||o())return;estState.results.set(t,n),updateRealTimeEstimateUI()}catch(e){console.warn("실측 추정 실패",e),o()||(estRatioSub.textContent="실측 실패 · 공식 추정값")}},450)}function onOptionChanged(){updateRealTimeEstimateUI(),scheduleMeasuredEstimate(),!comparisonViewerSection.classList.contains("hidden")&&currentBuffer&&renderSideBySidePreview()}qualityInput.addEventListener("input",()=>{const e=qualityInput.value;let t="권장";e<50?t="고압축":e>=85&&(t="고화질"),qualityValueLabel.textContent=`${e}% (${t})`,onOptionChanged()}),dpiInput.addEventListener("change",()=>{const e=dpiInput.value;dpiValueLabel.textContent={72:"72 DPI (모바일/최소)",150:"150 DPI (웹/화면용)",220:"220 DPI (인쇄 겸용)",300:"300 DPI (인쇄용)"}[e]||`${e} DPI`,onOptionChanged()}),document.querySelectorAll('input[name="engineMode"]').forEach(e=>{e.addEventListener("change",e=>{"EXTREME_RASTER"===e.target.value?rasterWarning.classList.remove("hidden"):rasterWarning.classList.add("hidden"),updateEngineOptionStates(),onOptionChanged()})});let isSyncingLeft=!1,isSyncingRight=!1;async function handleFileSelect(e){if("application/pdf"===e.type||e.name.toLowerCase().endsWith(".pdf")){currentFile=e,currentBuffer=await e.arrayBuffer(),resetMeasuredEstimate(),uploadPrompt.classList.add("hidden"),fileInfoBox.classList.remove("hidden"),fileStatusBadge.classList.remove("hidden"),fileStatusBadge.textContent="준비 완료",fileNameText.textContent=e.name,fileSizeText.textContent=formatBytes(e.size),origSizeMetric.textContent=formatBytes(e.size),compSizeMetric.textContent="-",compRatioSub.textContent="실행 후 확정",resultSummaryBox.classList.add("hidden"),setDownloadEnabled(!1),compressBtn.disabled=!1,comparePreviewBtn.disabled=!1,previewPageSelect.disabled=!1,setProgress(0,"문서 구조 분석 중...");try{const t=await PDFLib.PDFDocument.load(currentBuffer,{ignoreEncryption:!0});totalPages=t.getPageCount(),filePagesText.textContent=`총 ${totalPages}페이지`,previewPageSelect.innerHTML="";for(let e=1;e<=totalPages;e++){const t=document.createElement("option");t.value=String(e),t.className="text-slate-900",t.textContent=1===e?"1 페이지 (기본)":`${e} 페이지`,previewPageSelect.appendChild(t)}let n=0,a=0,o=0,r=0;for(const[,e]of t.context.enumerateIndirectObjects())if(e instanceof PDFLib.PDFRawStream&&e.dict){const t=e.contents?e.contents.byteLength:0,r=e.dict.get(PDFLib.PDFName.of("Subtype"));r&&"/Image"===r.toString()?(n++,a+=t):o+=t}try{r=collectImageInfos(t,!1).images.filter(e=>e.route).length}catch(e){}pdfStats={totalBytes:e.size,imageStreamBytes:a,imageCount:n,otherStreamBytes:o,overheadBytes:Math.max(0,e.size-a-o),measuredSampleRatio:null},recommendBadge.classList.remove("hidden"),recommendBadge.textContent=n>0?r>0?`💡 압축 가능한 사진 ${r}개 → 표준 압축 추천`:`💡 사진 ${n}개 (재압축 대상 아님) → 표준 압축으로 구조 정리`:"💡 텍스트 위주 문서 → 표준 압축 (더 줄이려면 최대 압축)",updateEngineOptionStates(),updateRealTimeEstimateUI(),scheduleMeasuredEstimate(),setProgress(0,"압축 준비 완료")}catch(t){filePagesText.textContent="페이지 수 확인 불가",pdfStats={totalBytes:e.size,imageStreamBytes:Math.round(.7*e.size),imageCount:1,otherStreamBytes:Math.round(.2*e.size),overheadBytes:Math.round(.1*e.size),measuredSampleRatio:null},updateEngineOptionStates(),updateRealTimeEstimateUI(),scheduleMeasuredEstimate(),setProgress(0,"압축 준비 완료")}}else alert("PDF 파일만 업로드할 수 있습니다.")}origScrollContainer.addEventListener("scroll",()=>{syncScrollCheck.checked&&!isSyncingLeft?(isSyncingRight=!0,compScrollContainer.scrollTop=origScrollContainer.scrollTop,compScrollContainer.scrollLeft=origScrollContainer.scrollLeft):isSyncingLeft=!1}),compScrollContainer.addEventListener("scroll",()=>{syncScrollCheck.checked&&!isSyncingRight?(isSyncingLeft=!0,origScrollContainer.scrollTop=compScrollContainer.scrollTop,origScrollContainer.scrollLeft=compScrollContainer.scrollLeft):isSyncingRight=!1}),document.querySelectorAll(".zoom-btn").forEach(e=>{e.addEventListener("click",()=>{document.querySelectorAll(".zoom-btn").forEach(e=>{e.className="zoom-btn px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900"}),e.className="zoom-btn px-2.5 py-1 rounded-md bg-white text-indigo-600 shadow-sm",currentZoom=parseFloat(e.dataset.zoom)||1,currentBuffer&&!comparisonViewerSection.classList.contains("hidden")&&renderSideBySidePreview()})}),closeComparisonBtn.addEventListener("click",()=>{comparisonViewerSection.classList.add("hidden")}),previewPageSelect.addEventListener("change",()=>{currentBuffer&&!comparisonViewerSection.classList.contains("hidden")&&renderSideBySidePreview()}),comparePreviewBtn.addEventListener("click",async()=>{currentBuffer&&(comparisonViewerSection.classList.remove("hidden"),await renderSideBySidePreview(),comparisonViewerSection.scrollIntoView({behavior:"smooth",block:"start"}))}),dropZone.addEventListener("click",e=>{e.target.closest("#removeFileBtn")||fileInput.click()}),dropZone.addEventListener("dragover",e=>{e.preventDefault(),dropZone.classList.add("drag-active")}),dropZone.addEventListener("dragleave",()=>{dropZone.classList.remove("drag-active")}),dropZone.addEventListener("drop",e=>{e.preventDefault(),dropZone.classList.remove("drag-active"),e.dataTransfer.files&&e.dataTransfer.files[0]&&handleFileSelect(e.dataTransfer.files[0])}),fileInput.addEventListener("change",e=>{e.target.files&&e.target.files[0]&&handleFileSelect(e.target.files[0])}),removeFileBtn.addEventListener("click",e=>{e.stopPropagation(),currentFile=null,currentBuffer=null,resetMeasuredEstimate(),fileInput.value="",uploadPrompt.classList.remove("hidden"),fileInfoBox.classList.add("hidden"),fileStatusBadge.classList.add("hidden"),recommendBadge.classList.add("hidden"),comparisonViewerSection.classList.add("hidden"),compressBtn.disabled=!0,comparePreviewBtn.disabled=!0,previewPageSelect.disabled=!0,resultSummaryBox.classList.add("hidden"),setDownloadEnabled(!1),origSizeMetric.textContent="-",estSizeMetric.textContent="-",estRatioSub.textContent="조건 변경 시 자동 계산",compSizeMetric.textContent="-",compRatioSub.textContent="실행 후 확정",setProgress(0,"파일을 업로드해 주세요")});let previewRunId=0;const compareBtnDefaultHtml=comparePreviewBtn.innerHTML;async function renderPageToNewCanvas(e,t){const n=document.createElement("canvas");n.width=Math.max(32,Math.floor(t.width)),n.height=Math.max(32,Math.floor(t.height));const a=n.getContext("2d");return a.fillStyle="#FFFFFF",a.fillRect(0,0,n.width,n.height),await e.render({canvasContext:a,viewport:t}).promise,n}function copyToCanvas(e,t){e.width=t.width,e.height=t.height,e.getContext("2d").drawImage(t,0,0)}async function renderSideBySidePreview(){if(!currentBuffer)return;const e=++previewRunId,t=()=>e!==previewRunId,n=parseInt(previewPageSelect.value,10)||1,a=getCurrentOptions();comparePreviewBtn.disabled=!0,comparePreviewBtn.innerHTML="<span>렌더링 중...</span>";let o=null;try{o=await pdfjsLib.getDocument({data:currentBuffer.slice(0),...PDFJS_OPTS}).promise;const e=await o.getPage(n),r=1.25*currentZoom,i=e.getViewport({scale:r}),s=await renderPageToNewCanvas(e,i);if(t())return;let c;if("EXTREME_RASTER"===a.mode){const n=await renderPageToNewCanvas(e,e.getViewport({scale:a.dpi/72}));if(t())return;const o=new Image;await new Promise((e,t)=>{o.onload=e,o.onerror=t,o.src=n.toDataURL("image/jpeg",a.quality)}),c=o}else{const e=await PDFLib.PDFDocument.load(currentBuffer.slice(0),{ignoreEncryption:!0}),o=await PDFLib.PDFDocument.create(),[i]=await o.copyPages(e,[n-1]);o.addPage(i),await recompressDocImages(o,a);const s=await o.save({useObjectStreams:!0});if(t())return;const l=await pdfjsLib.getDocument({data:s,...PDFJS_OPTS}).promise;try{const e=await l.getPage(1);c=await renderPageToNewCanvas(e,e.getViewport({scale:r}))}finally{l.destroy()}}if(t())return;copyToCanvas(origPreviewCanvas,s),compPreviewCanvas.width=origPreviewCanvas.width,compPreviewCanvas.height=origPreviewCanvas.height;const l=compPreviewCanvas.getContext("2d");l.fillStyle="#FFFFFF",l.fillRect(0,0,compPreviewCanvas.width,compPreviewCanvas.height),l.imageSmoothingEnabled=!0,l.drawImage(c,0,0,compPreviewCanvas.width,compPreviewCanvas.height),updateRealTimeEstimateUI();const d=getBestEstimate().bytes,u=currentBuffer.byteLength,m=u>0?Math.max(0,(u-d)/u*100).toFixed(1):"0.0";origPreviewHeaderLabel.textContent=`원본 (${formatBytes(u)})`,compPreviewHeaderLabel.textContent=`압축본 (예상 약 ${formatBytes(d)} · -${m}%)`,origPageBadge.textContent=`${n} 페이지 원본`,compPageBadge.textContent=`${n} 페이지 미리보기 (${a.dpi} DPI · 품질 ${Math.round(100*a.quality)}%)`}catch(e){t()||console.error(e)}finally{o&&o.destroy(),t()||(comparePreviewBtn.disabled=!1,comparePreviewBtn.innerHTML=compareBtnDefaultHtml,lucide.createIcons())}}const PN=e=>PDFLib.PDFName.of(e),IDENTITY=[1,0,0,1,0,0];function mulMatrix(e,t){return[e[0]*t[0]+e[1]*t[2],e[0]*t[1]+e[1]*t[3],e[2]*t[0]+e[3]*t[2],e[2]*t[1]+e[3]*t[3],e[4]*t[0]+e[5]*t[2]+t[4],e[4]*t[1]+e[5]*t[3]+t[5]]}function decodeContents(e,t){const n=[],a=t=>{if((t=e.lookup(t))instanceof PDFLib.PDFRawStream)try{n.push(PDFLib.decodePDFRawStream(t).decode())}catch(e){}};t instanceof PDFLib.PDFArray?t.asArray().forEach(a):t&&a(t);const o=new Uint8Array(n.reduce((e,t)=>e+t.length+1,0));let r=0;for(const e of n)o.set(e,r),r+=e.length,o[r++]=10;return o}function scanContent(e,t){const n=e.length,a=[],o=e=>0===e||9===e||10===e||12===e||13===e||32===e,r=e=>40===e||41===e||60===e||62===e||91===e||93===e||123===e||125===e||47===e||37===e,i=(t,n)=>{let a="";for(let o=t;o<n;o++)a+=String.fromCharCode(e[o]);return a};let s=0;for(;s<n;){const c=e[s];if(o(c)){s++;continue}if(37===c){for(;s<n&&10!==e[s]&&13!==e[s];)s++;continue}if(40===c){let t=1;for(s++;s<n&&t;)92===e[s]?s+=2:(40===e[s]?t++:41===e[s]&&t--,s++);a.push(null);continue}if(60===c){if(60===e[s+1]){s+=2;continue}for(;s<n&&62!==e[s];)s++;s++,a.push(null);continue}if(62===c||91===c||93===c||123===c||125===c){s++;continue}if(47===c){let t=s+1;for(;t<n&&!o(e[t])&&!r(e[t]);)t++;a.push({name:i(s+1,t)}),s=t;continue}let l=s;for(;l<n&&!o(e[l])&&!r(e[l]);)l++;if(l===s){s++;continue}const d=i(s,l);if(s=l,/^[+\-]?(\d+\.?\d*|\.\d+)$/.test(d))a.push(Number(d));else{if("BI"===d){let t=s;for(;t<n-2&&(73!==e[t]||68!==e[t+1]||!o(e[t-1])||!o(e[t+2]));)t++;for(t+=3;t<n-1&&(!o(e[t-1])||69!==e[t]||73!==e[t+1]||!(t+2>=n||o(e[t+2])));)t++;s=t+2,a.length=0;continue}t(d,a),a.length=0}}}function collectImagePlacements(e){const t=e.context,n=new Map;n.pages=new Map;let a=0;const o=(e,r,i,s)=>{let c=i;const l=[],d=r instanceof PDFLib.PDFDict?r.lookup(PN("XObject")):null;scanContent(e,(e,i)=>{if("q"===e)l.push(c);else if("Q"===e)l.length&&(c=l.pop());else if("cm"===e){const e=i.slice(-6);6===e.length&&e.every(e=>"number"==typeof e)&&(c=mulMatrix(e,c))}else if("Do"===e&&d instanceof PDFLib.PDFDict){const e=i[i.length-1];if(!e||!e.name)return;const l=e.name.replace(/#([0-9a-fA-F]{2})/g,(e,t)=>String.fromCharCode(parseInt(t,16))),u=d.get(PN(l)),m=t.lookup(u);if(!(m instanceof PDFLib.PDFRawStream))return;const g=m.dict.lookup(PN("Subtype"));if(g===PN("Image")&&u instanceof PDFLib.PDFRef){const e=Math.hypot(c[0],c[1]),t=Math.hypot(c[2],c[3]),o=n.get(u.tag);let r=n.pages.get(u.tag);r||n.pages.set(u.tag,r=new Set),r.add(a),(!o||e*t>o.w*o.h)&&n.set(u.tag,{w:e,h:t})}else if(g===PN("Form")&&s<8){const e=m.dict.lookup(PN("Matrix")),n=e instanceof PDFLib.PDFArray&&6===e.size()?e.asArray().map(e=>{const n=t.lookup(e);return n instanceof PDFLib.PDFNumber?n.asNumber():0}):IDENTITY,a=m.dict.lookup(PN("Resources"));try{o(PDFLib.decodePDFRawStream(m).decode(),a instanceof PDFLib.PDFDict?a:r,mulMatrix(n,c),s+1)}catch(e){}}}})},r=e.getPages();for(let e=0;e<r.length;e++){const n=r[e];a=e;try{o(decodeContents(t,n.node.Contents()),n.node.Resources(),IDENTITY,0)}catch(e){}}return n}function maxPageSidePt(e){let t=0;for(const n of e.getPages()){const{width:e,height:a}=n.getSize();t=Math.max(t,e,a)}return t||842}function scaleForTargetDpi(e,t,n,a,o){return e&&t?n&&n.w>.5&&n.h>.5?Math.min(1,Math.max(n.w/72*a/e,n.h/72*a/t)):Math.min(1,o/72*a/Math.max(e,t)):1}const MAX_PIXELS=14e6,MAX_SOURCE_PIXELS=6e7,MIN_GAIN=.97,numValue=e=>e instanceof PDFLib.PDFNumber?e.asNumber():null;function dictGet(e,t){try{return e.lookup(PN(t))}catch(e){return null}}function nameList(e){const t=dictGet(e,"Filter");return(t instanceof PDFLib.PDFArray?t.asArray():t?[t]:[]).map(t=>{const n=e.context.lookup(t);return n instanceof PDFLib.PDFName?n.asString().slice(1):"?"})}function colorComponents(e){if(e instanceof PDFLib.PDFName){const t=e.asString();return"/DeviceRGB"===t?3:"/DeviceGray"===t?1:"/DeviceCMYK"===t?4:0}if(e instanceof PDFLib.PDFArray&&e.size()>0){const t=e.lookup(0);if(t===PN("ICCBased")){const t=e.lookup(1),n=t&&t.dict?numValue(dictGet(t.dict,"N")):null;return 1===n||3===n||4===n?n:0}if(t===PN("CalRGB"))return 3;if(t===PN("CalGray"))return 1}return 0}function jpegInfo(e){if(!e||e.length<4||255!==e[0]||216!==e[1])return null;let t=2;for(;t+4<=e.length;){if(255!==e[t]){t++;continue}const n=e[t+1];if(255===n){t++;continue}if(216===n||1===n||n>=208&&n<=215){t+=2;continue}if(217===n||218===n)break;const a=e[t+2]<<8|e[t+3];if(n>=192&&n<=207&&196!==n&&200!==n&&204!==n)return{components:e[t+9]};t+=2+a}return null}function classifyImage(e,t,n){const a=t.dict,o={ref:e,tag:e.tag,obj:t,W:numValue(dictGet(a,"Width"))||0,H:numValue(dictGet(a,"Height"))||0,len:t.contents?t.contents.length:0,route:null,comps:0,reason:"",place:null},r=e=>(o.reason=e,o);if(!o.W||!o.H||!t.contents)return r("empty");if(n.has(e.tag))return r("mask");const i=dictGet(a,"ImageMask");if(i instanceof PDFLib.PDFBool&&i.asBoolean())return r("stencil");if(dictGet(a,"Mask")instanceof PDFLib.PDFArray)return r("colorkey");if((numValue(dictGet(a,"SMaskInData"))||0)>0)return r("smaskindata");const s=dictGet(a,"SMask");if(s&&s.dict&&s.dict.get(PN("Matte")))return r("matte");if(o.len<=4096||o.W*o.H<2500)return r("small");if(o.W*o.H>6e7)return r("huge");const c=nameList(a);if(c.some(e=>"CCITTFaxDecode"===e||"JBIG2Decode"===e||"?"===e))return r("filter");const l=colorComponents(dictGet(a,"ColorSpace"));if(!l)return r("colorspace");const d="JPXDecode"===c[c.length-1],u=numValue(dictGet(a,"BitsPerComponent"))||8;if(!d&&8!==u)return r("bpc");o.comps=l;let m=!0;const g=dictGet(a,"Decode");if(g){const e=g instanceof PDFLib.PDFArray?g.asArray().map(e=>numValue(a.context.lookup(e))):null;m=!!e&&e.length===2*l&&e.every((e,t)=>e===t%2)}if(o.route="render",1===c.length&&"DCTDecode"===c[0]&&m&&4!==l){const e=jpegInfo(t.contents);e&&e.components===l&&(o.route="bitmap")}return o}function collectImageInfos(e,t){const n=new Set,a=[];for(const[t,o]of e.context.enumerateIndirectObjects()){if(!(o instanceof PDFLib.PDFRawStream&&o.dict))continue;const e=dictGet(o.dict,"Subtype");if(e&&"/Image"===e.toString()){a.push([t,o]);for(const e of["SMask","Mask"]){const t=o.dict.get(PN(e));t instanceof PDFLib.PDFRef&&n.add(t.tag)}}}const o=t?collectImagePlacements(e):null;return{images:a.map(([e,t])=>{const a=classifyImage(e,t,n);return o&&(a.place=o.get(e.tag)||null),a}),placements:o,maxSide:t?maxPageSidePt(e):842}}let pdfWorkerShared=null;function getPdfWorker(){if(null===pdfWorkerShared)try{pdfWorkerShared=!(!window.pdfjsLib||!pdfjsLib.PDFWorker)&&new pdfjsLib.PDFWorker}catch(e){pdfWorkerShared=!1}return pdfWorkerShared||null}function newWhiteCanvas(e,t){const n=document.createElement("canvas");n.width=e,n.height=t;const a=n.getContext("2d");return a.fillStyle="#FFFFFF",a.fillRect(0,0,e,t),[n,a]}async function decodeBitmapToCanvas(e,t,n){const a=new Blob([e.obj.contents],{type:"image/jpeg"});let o;try{o=await createImageBitmap(a,{imageOrientation:"none"})}catch(e){o=await createImageBitmap(a)}const[r,i]=newWhiteCanvas(t,n);return i.imageSmoothingQuality="high",i.drawImage(o,0,0,t,n),o.close&&o.close(),r}async function renderImageViaPdfJs(e,t,n,a,o){const r=await PDFLib.PDFDocument.create({updateMetadata:!1}),i=t.obj.dict.clone(e.context);for(const e of["SMask","Mask","Metadata"])i.delete(PN(e));const s=PDFLib.PDFObjectCopier.for(e.context,r.context).copy(PDFLib.PDFRawStream.of(i,t.obj.contents)),c=r.context.register(s),l=r.addPage([t.W,t.H]),d=l.node.newXObject("Im",c);l.pushOperators(PDFLib.pushGraphicsState(),PDFLib.concatTransformationMatrix(t.W,0,0,t.H,0,0),PDFLib.drawObject(d),PDFLib.popGraphicsState());const u={data:await r.save({useObjectStreams:!1}),isEvalSupported:!1},m=getPdfWorker();m&&(u.worker=m);const g=await pdfjsLib.getDocument(u).promise;try{const e=await g.getPage(1),[t,r]=newWhiteCanvas(a,o);return await e.render({canvasContext:r,viewport:e.getViewport({scale:n})}).promise,t}finally{g.destroy()}}async function recompressImage(e,t,n,a,o){let r=Math.min(1,a);t.W*t.H*r*r>MAX_PIXELS&&(r=Math.sqrt(MAX_PIXELS/(t.W*t.H)));const i=Math.max(1,Math.round(t.W*r)),s=Math.max(1,Math.round(t.H*r)),c="bitmap"===t.route&&!o?await decodeBitmapToCanvas(t,i,s):await renderImageViaPdfJs(e,t,r,i,s),l=c.toDataURL("image/jpeg",n);c.width=c.height=0;const d=atob(l.split(",")[1]),u=new Uint8Array(d.length);for(let e=0;e<d.length;e++)u[e]=d.charCodeAt(e);return u.length>=t.len*MIN_GAIN?null:{bytes:u,width:i,height:s}}function applyReplacement(e,t){e.contents=t.bytes,e.dict.set(PN("Width"),PDFLib.PDFNumber.of(t.width)),e.dict.set(PN("Height"),PDFLib.PDFNumber.of(t.height)),e.dict.set(PN("Filter"),PN("DCTDecode")),e.dict.set(PN("ColorSpace"),PN("DeviceRGB")),e.dict.set(PN("BitsPerComponent"),PDFLib.PDFNumber.of(8)),e.dict.set(PN("Length"),PDFLib.PDFNumber.of(t.bytes.length)),e.dict.delete(PN("Decode")),e.dict.delete(PN("DecodeParms"))}async function recompressDocImages(e,t,n,a){const o=collectImageInfos(e,!0),r=o.images.filter(e=>e.route),i=new Set;let s=0,c=0,l=0;for(const d of r){try{const n=scaleForTargetDpi(d.W,d.H,d.place,t.dpi,o.maxSide),r=await recompressImage(e,d,t.quality,n,a);if(r){applyReplacement(d.obj,r),c++;const e=o.placements.pages.get(d.tag);e&&e.forEach(e=>i.add(e+1))}}catch(e){l++,console.warn("이미지를 처리하지 못해 원본을 유지합니다:",d.tag,e)}s++,n&&n(s,r.length)}return{total:r.length,replaced:c,failed:l,skipped:o.images.length-r.length,pages:i}}const VERIFY={cols:12,rows:16,width:240,limit:45};async function lumaGrid(e,t){const n=await e.getPage(t),a=n.getViewport({scale:1}),o=await renderPageToNewCanvas(n,n.getViewport({scale:VERIFY.width/a.width})),r=o.width,i=o.height,s=o.getContext("2d").getImageData(0,0,r,i).data,c=new Float64Array(VERIFY.cols*VERIFY.rows),l=new Float64Array(VERIFY.cols*VERIFY.rows);for(let e=0;e<i;e++){const t=Math.min(VERIFY.rows-1,Math.floor(e*VERIFY.rows/i))*VERIFY.cols;for(let n=0;n<r;n++){const a=4*(e*r+n),o=t+Math.min(VERIFY.cols-1,Math.floor(n*VERIFY.cols/r));c[o]+=.299*s[a]+.587*s[a+1]+.114*s[a+2],l[o]++}}return o.width=o.height=0,c.map((e,t)=>l[t]?e/l[t]:255)}function pickSamplePages(e,t){if(e.length<=t)return e.slice();const n=[];for(let a=0;a<t;a++)n.push(e[Math.round(a*(e.length-1)/(t-1))]);return[...new Set(n)]}async function verifyOutput(e,t,n){if(!n.length)return{ok:!0,checked:0,worst:0,page:0};const a=e=>pdfjsLib.getDocument({data:e,isEvalSupported:!1,...PDFJS_OPTS}).promise,o=await a(e.slice(0));let r=null,i=0,s=0;try{r=await a(new Uint8Array(t).slice(0));for(const e of n){const t=await lumaGrid(o,e),n=await lumaGrid(r,e);for(let a=0;a<t.length;a++){const o=Math.abs(t[a]-n[a]);o>i&&(i=o,s=e)}}}finally{o.destroy(),r&&r.destroy()}return{ok:i<=VERIFY.limit,checked:n.length,worst:Math.round(i),page:s}}async function runEngine1PdfLib(e,t,n){setProgress(15,"PDF 객체 트리 파싱 중...");const a=await PDFLib.PDFDocument.load(e,{ignoreEncryption:!0});if(a.isEncrypted)throw new Error('암호가 걸린 PDF는 표준 압축을 쓸 수 없습니다. "최대 압축"을 사용해 주세요.');a.setTitle(""),a.setAuthor(""),a.setSubject(""),a.setKeywords([]),a.setProducer(""),a.setCreator("");const o=await recompressDocImages(a,t,(e,t)=>{setProgress(15+Math.round(e/Math.max(1,t)*50),`${n?"안전 모드: ":""}사진 압축 중 (${e} / ${t})...`)},n);setProgress(65,"페이지 트리 재구성 중...");const r=await PDFLib.PDFDocument.create(),i=a.getPageIndices();(await r.copyPages(a,i)).forEach(e=>r.addPage(e)),setProgress(85,"압축 패키징 중...");return{bytes:await r.save({useObjectStreams:!0,addDefaultPage:!1}),stats:o}}async function verifyAgainstOriginal(e,t){const n=[...t.stats.pages].sort((e,t)=>e-t);return n.length?(setProgress(90,"그림 색 검증 중..."),verifyOutput(e,t.bytes,pickSamplePages(n,5))):{ok:!0,checked:0,worst:0,page:0}}async function compressStandard(e,t){let n=await runEngine1PdfLib(e.slice(0),t,!1),a=await verifyAgainstOriginal(e,n),o=!1;return a.ok||(console.warn("색 검증 실패 → 안전 모드로 재시도",a),o=!0,n=await runEngine1PdfLib(e.slice(0),t,!0),a=await verifyAgainstOriginal(e,n)),{bytes:a.ok?n.bytes:null,stats:n.stats,verify:a,safeMode:o}}function describeStandard(e){const t=[];if(e.bytes){const n=e.stats;t.push(n.total?`사진 ${n.replaced}/${n.total}개 압축`:"압축할 사진 없음"),n.failed&&t.push(`${n.failed}개는 처리하지 못해 원본 유지`),e.safeMode&&t.push("색 검증 실패로 안전 모드(PDF.js 디코딩)로 재압축"),t.push(e.verify.checked?`그림 색 검증 통과(${e.verify.checked}쪽 확인)`:"색 검증 대상 없음")}else t.push(`그림 색 검증에 실패해 원본을 유지했어요 (${e.verify.page}쪽에서 색 차이 감지)`);return{engine:"표준 압축 (pdf-lib)",detail:t.join(" · ")}}async function runEngine2GhostscriptWasm(e,t){setProgress(15,"WASM 엔진 불러오는 중...");const n={72:"/screen",150:"/ebook",220:"/printer",300:"/printer"}[String(t.dpi)]||"/ebook";let a="";try{const o="https://cdn.jsdelivr.net/npm/@jspawn/ghostscript-wasm@0.0.2/",r=await(import(o+"gs.mjs"));if(r&&"function"==typeof r.default){setProgress(45,"WASM 인스턴스 초기화 중...");const i=await r.default({locateFile:e=>o+e});i.FS.writeFile("input.pdf",new Uint8Array(e)),setProgress(70,"압축 파이프라인 실행 중..."),await i.callMain(["-sDEVICE=pdfwrite","-dCompatibilityLevel=1.5",`-dPDFSETTINGS=${n}`,"-dDownsampleColorImages=true","-dDownsampleGrayImages=true","-dDownsampleMonoImages=true",`-dColorImageResolution=${t.dpi}`,`-dGrayImageResolution=${t.dpi}`,`-dMonoImageResolution=${Math.max(t.dpi,300)}`,"-dNOPAUSE","-dQUIET","-dBATCH","-sOutputFile=output.pdf","input.pdf"]);const s=i.FS.readFile("output.pdf");if(s&&s.byteLength>0){setProgress(90,"그림 색 검증 중...");const t=Array.from({length:Math.max(1,totalPages)},(e,t)=>t+1),n=await verifyOutput(e,s,pickSamplePages(t,4));if(n.ok)return{bytes:s,report:{engine:"정밀 압축 (Ghostscript WASM)",detail:`그림 색 검증 통과(${n.checked}쪽 확인)`}};a=`Ghostscript 결과의 ${n.page}쪽에서 색 차이가 감지됨`}else a="출력 파일이 비어 있음"}else a="엔진 모듈 형식이 예상과 다름"}catch(e){a=e&&e.message?e.message:String(e||"알 수 없는 오류"),console.warn("Ghostscript WASM을 쓰지 못했습니다:",e)}setProgress(45,"표준 압축으로 대체하는 중...");const o=await compressStandard(e,t),r=describeStandard(o);return{bytes:o.bytes,report:{engine:"표준 압축으로 대체됨 (Ghostscript 사용 불가)",detail:`사유: ${a} · ${r.detail}`}}}async function runEngine3Rasterize(e,t){setProgress(10,"PDF.js 렌더러 초기화 중...");const n=pdfjsLib.getDocument({data:e.slice(0),...PDFJS_OPTS}),a=await n.promise,o=a.numPages,r=await PDFLib.PDFDocument.create(),i=t.dpi/72;for(let e=1;e<=o;e++){setProgress(15+Math.round(e/o*75),`페이지 렌더링 (${e} / ${o})...`);const n=await a.getPage(e),s=n.getViewport({scale:1}),c=n.getViewport({scale:i}),l=document.createElement("canvas");l.width=Math.floor(c.width),l.height=Math.floor(c.height);const d=l.getContext("2d");d.fillStyle="#FFFFFF",d.fillRect(0,0,l.width,l.height),await n.render({canvasContext:d,viewport:c}).promise;const u=l.toDataURL("image/jpeg",t.quality),m=await r.embedJpg(u);r.addPage([s.width,s.height]).drawImage(m,{x:0,y:0,width:s.width,height:s.height})}return setProgress(92,"PDF 패키징 중..."),await r.save({useObjectStreams:!0})}compressBtn.addEventListener("click",async()=>{if(!currentBuffer||!currentFile)return;compressBtn.disabled=!0,resultSummaryBox.classList.add("hidden"),setDownloadEnabled(!1),fileStatusBadge.textContent="압축 진행 중...";const e=getCurrentOptions(),t=performance.now();try{let n=null,a={engine:"",detail:""};if("FAST_PDFLIB"===e.mode){const t=await compressStandard(currentBuffer,e);n=t.bytes,a=describeStandard(t)}else if("DEEP_GS_WASM"===e.mode){const t=await runEngine2GhostscriptWasm(currentBuffer.slice(0),e);n=t.bytes,a=t.report}else"EXTREME_RASTER"===e.mode&&(n=await runEngine3Rasterize(currentBuffer.slice(0),e),a={engine:"최대 압축 (쪽 전체 이미지화)",detail:"글자는 이미지가 되어 검색·복사가 되지 않아요"});let o=!1;(!n||n.byteLength>=currentBuffer.byteLength)&&(n=new Uint8Array(currentBuffer.slice(0)),o=!0);const r=((performance.now()-t)/1e3).toFixed(2),i=currentBuffer.byteLength,s=n.byteLength,c=i-s,l=i>0?(c/i*100).toFixed(1):"0.0";setProgress(100,`압축 완료 (${r}초)`),fileStatusBadge.textContent="압축 완료",compSizeMetric.textContent=formatBytes(s),compRatioSub.textContent=c>0?`-${l}% 확정`:"원본 유지",currentDownloadUrl&&URL.revokeObjectURL(currentDownloadUrl);const d=new Blob([n],{type:"application/pdf"});currentDownloadUrl=URL.createObjectURL(d);const u=currentFile.name.replace(/\.pdf$/i,"");downloadLink.href=currentDownloadUrl,downloadLink.download=`${u}_compressed.pdf`,savedBadgeText.textContent=c>0?`${l}% 감소 (-${formatBytes(c)})`:"0% (원본 유지)",engineReportText.textContent=a.engine+(a.detail?" · "+a.detail:"");const m="EXTREME_RASTER"!==e.mode&&(o||c/i<.05);resultHintText.classList.toggle("hidden",!m),resultSummaryBox.classList.remove("hidden"),setDownloadEnabled(!0)}catch(e){console.error(e),setProgress(0,"오류 발생"),fileStatusBadge.textContent="오류",engineReportText.textContent="오류: "+(e&&e.message?e.message:e),resultHintText.classList.add("hidden"),savedBadgeText.textContent="압축하지 못했어요",resultSummaryBox.classList.remove("hidden")}finally{compressBtn.disabled=!1}})</script></body></html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PDF 스튜디오 Pro2</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- pdf-lib CDN -->
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <!-- PDF.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <style>
+    @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    }
+    .drag-active {
+      border-color: #4f46e5 !important;
+      background-color: #eef2ff !important;
+    }
+    .preview-scroll::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    .preview-scroll::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 6px;
+    }
+    .preview-scroll::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 6px;
+    }
+    .preview-scroll::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-20">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-sm">
+          <i data-lucide="file-down" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold text-slate-900">PDF 스튜디오 Pro2</h1>
+          <p class="text-xs text-slate-500">파일 서버 전송 없이 이 브라우저에서만 작동하는 PDF 압축 프로그램!</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 text-xs font-semibold bg-indigo-50 text-indigo-700 px-3 py-1.5 rounded-full border border-indigo-200">
+        <i data-lucide="code" class="w-4 h-4"></i>
+        <span>Made By H.S.Park</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-6xl mx-auto w-full px-6 py-8 flex-1 space-y-8">
+    
+    <!-- Top Grid: Left Column (Upload, Engine, Comparison) & Right Column (Results, Logo, Options) -->
+    <!-- items-stretch: 좌우 열 높이를 같게 맞춰 두 열의 마지막 박스 아래선이 일치하도록 함 -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+      
+      <!-- Left Column: Upload, Engine Selection, and Comparison Preview Card (7 cols) -->
+      <div class="lg:col-span-7 space-y-6 flex flex-col">
+        
+        <!-- Step 1: Upload Box -->
+        <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 text-xs flex items-center justify-center font-bold">1</span>
+              PDF 파일 선택
+            </h2>
+            <span id="fileStatusBadge" class="hidden text-xs px-2.5 py-1 rounded-md bg-slate-100 text-slate-600 font-medium">대기 중</span>
+          </div>
+
+          <div id="dropZone" class="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center transition-all cursor-pointer hover:border-indigo-500 hover:bg-slate-50/80">
+            <input type="file" id="fileInput" accept="application/pdf" class="hidden" />
+            <div id="uploadPrompt" class="space-y-3">
+              <div class="w-12 h-12 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto">
+                <i data-lucide="upload-cloud" class="w-6 h-6"></i>
+              </div>
+              <div>
+                <p class="text-sm font-semibold text-slate-700">클릭하여 PDF를 선택하거나 이곳에 끌어다 놓으세요</p>
+                <p class="text-xs text-slate-400 mt-1">파일을 올리면 실시간 예상 용량과 화질 비교 기능을 바로 활용할 수 있습니다</p>
+              </div>
+            </div>
+
+            <div id="fileInfoBox" class="hidden text-left bg-slate-50 p-4 rounded-xl border border-slate-200 flex items-center justify-between">
+              <div class="flex items-center gap-3 overflow-hidden">
+                <div class="w-10 h-10 rounded-lg bg-red-100 text-red-600 flex items-center justify-center shrink-0">
+                  <i data-lucide="file-text" class="w-5 h-5"></i>
+                </div>
+                <div class="truncate">
+                  <p id="fileNameText" class="text-sm font-bold text-slate-800 truncate">sample.pdf</p>
+                  <div class="flex items-center gap-3 text-xs text-slate-500 mt-0.5">
+                    <span id="fileSizeText">0 MB</span>
+                    <span>•</span>
+                    <span id="filePagesText">페이지 분석 중...</span>
+                  </div>
+                </div>
+              </div>
+              <button id="removeFileBtn" type="button" class="text-slate-400 hover:text-red-500 p-1.5 rounded-lg hover:bg-white transition" title="파일 변경">
+                <i data-lucide="x" class="w-5 h-5"></i>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 2: Compression Mode Selection -->
+        <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 text-xs flex items-center justify-center font-bold">2</span>
+              압축 방식 선택
+            </h2>
+            <span id="recommendBadge" class="hidden text-xs font-semibold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full"></span>
+          </div>
+
+          <div class="space-y-3" id="engineSelector">
+            <!-- 표준 압축 -->
+            <label class="block cursor-pointer">
+              <input type="radio" name="engineMode" value="FAST_PDFLIB" class="peer sr-only" checked />
+              <div class="p-4 rounded-xl border-2 border-slate-200 peer-checked:border-indigo-600 peer-checked:bg-indigo-50/40 transition hover:bg-slate-50">
+                <div class="flex items-start justify-between gap-2">
+                  <div class="flex items-center gap-2.5">
+                    <span class="text-lg">⚡</span>
+                    <div>
+                      <p class="text-sm font-bold text-slate-900">표준 압축 · 글자 유지 <span class="text-indigo-600">(권장)</span></p>
+                      <p class="text-xs text-slate-500 mt-0.5">사진만 골라 다시 압축하고 글자·도형·링크는 그대로 둡니다. 색이 달라지면 자동으로 안전 모드로 다시 시도합니다.</p>
+                    </div>
+                  </div>
+                  <span class="text-[11px] font-semibold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 shrink-0">텍스트 유지</span>
+                </div>
+              </div>
+            </label>
+
+            <!-- 최대 압축 -->
+            <label class="block cursor-pointer">
+              <input type="radio" name="engineMode" value="EXTREME_RASTER" class="peer sr-only" />
+              <div class="p-4 rounded-xl border-2 border-slate-200 peer-checked:border-indigo-600 peer-checked:bg-indigo-50/40 transition hover:bg-slate-50">
+                <div class="flex items-start justify-between gap-2">
+                  <div class="flex items-center gap-2.5">
+                    <span class="text-lg">🔒</span>
+                    <div>
+                      <p class="text-sm font-bold text-slate-900">최대 압축 · 쪽 전체 이미지화</p>
+                      <p class="text-xs text-slate-500 mt-0.5">모든 쪽을 그림으로 바꿔 가장 작게 만듭니다. 글자 검색·복사는 되지 않습니다.</p>
+                    </div>
+                  </div>
+                  <span class="text-[11px] font-semibold px-2 py-0.5 rounded bg-amber-100 text-amber-800 shrink-0">통이미지 변환</span>
+                </div>
+              </div>
+            </label>
+
+            <!-- 고급 옵션 -->
+            <details class="rounded-xl border border-slate-200 bg-slate-50/50">
+              <summary class="cursor-pointer select-none px-4 py-2.5 text-xs font-semibold text-slate-600">고급 옵션</summary>
+              <div class="p-3 pt-0">
+                <label class="block cursor-pointer">
+                  <input type="radio" name="engineMode" value="DEEP_GS_WASM" class="peer sr-only" />
+                  <div class="p-4 rounded-xl border-2 border-slate-200 bg-white peer-checked:border-indigo-600 peer-checked:bg-indigo-50/40 transition hover:bg-slate-50">
+                    <div class="flex items-start justify-between gap-2">
+                      <div class="flex items-center gap-2.5">
+                        <span class="text-lg">💎</span>
+                        <div>
+                          <p class="text-sm font-bold text-slate-900">정밀 압축 · Ghostscript WASM</p>
+                          <p class="text-xs text-slate-500 mt-0.5">WebAssembly 엔진으로 폰트와 이미지를 함께 정리합니다. 불러오지 못하면 표준 압축으로 대체하고 그 사유를 결과에 표시합니다.</p>
+                        </div>
+                      </div>
+                      <span class="text-[11px] font-semibold px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 shrink-0">실험적</span>
+                    </div>
+                  </div>
+                </label>
+              </div>
+            </details>
+          </div>
+
+          <!-- Warning banner for Mode 3 -->
+          <div id="rasterWarning" class="hidden mt-3 p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-xs flex items-start gap-2">
+            <i data-lucide="alert-triangle" class="w-4 h-4 shrink-0 mt-0.5 text-amber-600"></i>
+            <div>
+              <strong>주의:</strong> 페이지 전체 이미지화 모드를 사용하면 결과 PDF에서 <strong>텍스트 드래그(복사) 및 검색이 불가능</strong>해집니다.
+            </div>
+          </div>
+        </section>
+
+        <!-- Original vs Compressed Side-by-Side Quality Preview Controller Card -->
+        <section class="bg-indigo-950 text-white rounded-2xl p-6 shadow-sm border border-indigo-900 space-y-4 flex-1 flex flex-col justify-between">
+          <div>
+            <h3 class="text-sm font-bold flex items-center gap-1.5">
+              <i data-lucide="split-square-horizontal" class="w-4 h-4 text-indigo-300"></i>
+              원본 · 압축본 화질 비교 미리보기
+            </h3>
+            <p class="text-xs text-indigo-200 mt-1 leading-relaxed">
+              선택한 1개 페이지를 현재 설정으로 빠르게 압축하여 원본과 압축본의 화질을 나란히 비교합니다.
+            </p>
+          </div>
+
+          <!-- Page selector & Preview Trigger -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 pt-1">
+            <div class="flex items-center gap-2 bg-indigo-950/80 border border-indigo-700/80 rounded-xl px-3 py-2 shrink-0">
+              <label for="previewPageSelect" class="text-xs text-indigo-200 font-medium whitespace-nowrap">비교 페이지:</label>
+              <select id="previewPageSelect" disabled class="bg-transparent text-white text-xs font-bold focus:outline-none cursor-pointer disabled:opacity-50">
+                <option value="1" class="text-slate-900">1 페이지 (기본)</option>
+              </select>
+            </div>
+
+            <button id="comparePreviewBtn" type="button" disabled class="flex-1 py-2.5 px-4 rounded-xl bg-indigo-500 hover:bg-indigo-400 disabled:bg-indigo-900/60 disabled:text-indigo-400 disabled:cursor-not-allowed text-white font-semibold text-xs transition flex items-center justify-center gap-1.5 shadow-sm">
+              <i data-lucide="eye" class="w-4 h-4"></i>
+              <span>비교 미리보기 실행</span>
+            </button>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Right Column: Result / Estimate Card (Top), Logo Image (Middle), & Fine-Tuning Options (Bottom) (5 cols) -->
+      <div class="lg:col-span-5 space-y-6 flex flex-col">
+        
+        <!-- Result & Real-Time Estimate Card -->
+        <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-5">
+          <div class="flex items-center justify-between">
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              <i data-lucide="bar-chart-3" class="w-5 h-5 text-indigo-600"></i>
+              예상 용량 및 압축 결과
+            </h2>
+            <span class="text-[11px] font-semibold px-2.5 py-1 rounded bg-indigo-50 text-indigo-600 border border-indigo-200">실시간 예측</span>
+          </div>
+
+          <!-- Comparison Metrics -->
+          <div class="grid grid-cols-3 gap-2">
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-center">
+              <p class="text-[10px] text-slate-400 font-medium">원본 용량</p>
+              <p id="origSizeMetric" class="text-sm font-extrabold text-slate-700 mt-1">-</p>
+            </div>
+            <div class="p-3 rounded-xl bg-amber-50/70 border border-amber-200 text-center">
+              <p class="text-[10px] text-amber-700 font-semibold">예상 압축본</p>
+              <p id="estSizeMetric" class="text-sm font-extrabold text-amber-800 mt-1">-</p>
+              <p id="estRatioSub" class="text-[9px] text-amber-600 font-medium mt-0.5">조건 변경 시 즉시</p>
+            </div>
+            <div class="p-3 rounded-xl bg-indigo-50/60 border border-indigo-200 text-center">
+              <p class="text-[10px] text-indigo-600 font-medium">실제 압축결과</p>
+              <p id="compSizeMetric" class="text-sm font-extrabold text-indigo-700 mt-1">-</p>
+              <p id="compRatioSub" class="text-[9px] text-indigo-500 font-medium mt-0.5">실행 후 확정</p>
+            </div>
+          </div>
+
+          <!-- Savings Highlight Banner (다운로드 버튼은 아래 '세부 압축 옵션 설정' 카드로 옮김) -->
+          <div id="resultSummaryBox" class="hidden p-4 rounded-xl bg-emerald-50 border border-emerald-200">
+            <p class="text-xs font-semibold text-emerald-800">최종 절감된 용량</p>
+            <p id="savedBadgeText" class="text-lg font-black text-emerald-700 mt-0.5">0% 감소</p>
+            <p id="engineReportText" class="text-[11px] text-emerald-800/80 mt-1.5 leading-relaxed"></p>
+            <p id="resultHintText" class="hidden text-[11px] text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-2.5 py-1.5 mt-2 leading-relaxed">💡 더 줄이려면 "최대 압축"을 선택하세요. 단, 글자가 이미지로 바뀌어 검색·복사가 되지 않습니다.</p>
+          </div>
+        </section>
+
+        <!-- Logo Image Inserted in Between: 박스 선·그림자·흰 배경 없이 페이지 배경과 하나로 보이게 함.
+             flex-1 로 오른쪽 열이 더 짧을 때 남는 높이를 이 영역이 채워 아래 박스 위치를 맞춤 -->
+        <div class="flex-1 flex items-center justify-center py-1">
+          <img src="logo.png" alt="PDF 스튜디오 Pro2 로고" class="max-h-32 w-auto object-contain mix-blend-multiply" />
+        </div>
+
+        <!-- Step 3: Fine-tuning Options (Bottom of Right Column) -->
+        <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 text-xs flex items-center justify-center font-bold">3</span>
+              세부 압축 옵션 설정
+            </h2>
+            <span id="engineRuleNotice" class="text-[10px] font-medium text-indigo-600 bg-indigo-50 px-2 py-1 rounded-md">고급 최적화 자동 적용 중</span>
+          </div>
+
+          <div class="space-y-4">
+            <!-- Image Quality Slider -->
+            <div id="qualityWrapper" class="bg-slate-50 p-4 rounded-xl border border-slate-200 transition-all">
+              <div class="flex justify-between items-center mb-2">
+                <label for="qualityInput" class="text-xs font-bold text-slate-700">JPEG 이미지 품질</label>
+                <span id="qualityValueLabel" class="text-xs font-bold text-indigo-600">70% (권장)</span>
+              </div>
+              <input id="qualityInput" type="range" min="20" max="95" step="5" value="70" class="w-full accent-indigo-600 cursor-pointer" />
+              <div class="flex justify-between text-[11px] text-slate-400 mt-1">
+                <span>최대 압축 (20%)</span>
+                <span>고화질 (95%)</span>
+              </div>
+            </div>
+
+            <!-- Target DPI / Scale Select -->
+            <div id="dpiWrapper" class="bg-slate-50 p-4 rounded-xl border border-slate-200 transition-all">
+              <div class="flex justify-between items-center mb-2">
+                <label for="dpiInput" class="text-xs font-bold text-slate-700">목표 해상도 (DPI)</label>
+                <span id="dpiValueLabel" class="text-xs font-bold text-indigo-600">150 DPI (웹/화면용)</span>
+              </div>
+              <select id="dpiInput" class="w-full mt-1 bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-medium text-slate-700 focus:outline-none focus:border-indigo-600">
+                <option value="72">72 DPI — 최소 용량 (모바일/열람용)</option>
+                <option value="150" selected>150 DPI — 표준 균형 (일반 문서 권장)</option>
+                <option value="220">220 DPI — 고화질 유지 (화면 + 간단한 인쇄)</option>
+                <option value="300">300 DPI — 인쇄용 (시험지·인쇄물)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Progress Bar (결과 카드에서 이 자리로 옮김) -->
+          <div class="mt-5">
+            <div class="flex justify-between text-xs font-medium text-slate-600 mb-1.5">
+              <span id="progressStatusText">파일을 업로드해 주세요</span>
+              <span id="progressPercentText">0%</span>
+            </div>
+            <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+              <div id="progressBar" class="h-full bg-indigo-600 transition-all duration-300 w-0"></div>
+            </div>
+          </div>
+
+          <!-- Action Buttons: 왼쪽 실행, 오른쪽 다운로드 -->
+          <div class="mt-4 grid grid-cols-2 gap-3">
+            <button id="compressBtn" disabled class="py-3.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-bold text-sm shadow-sm transition flex items-center justify-center gap-2">
+              <i data-lucide="zap" class="w-4 h-4"></i>
+              <span>PDF 용량 줄이기</span>
+            </button>
+            <a id="downloadLink" href="#" download="compressed.pdf" aria-disabled="true" tabindex="-1" class="py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-sm transition flex items-center justify-center gap-2 opacity-40 pointer-events-none">
+              <i data-lucide="download" class="w-4 h-4"></i>
+              <span>압축 PDF 다운로드</span>
+            </a>
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <!-- Bottom Full-Width Section: Side-by-Side Comparison Viewer -->
+    <section id="comparisonViewerSection" class="hidden bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+      <div class="flex flex-wrap items-center justify-between gap-4 pb-4 mb-5 border-b border-slate-200">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center">
+            <i data-lucide="columns" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h2 class="text-base font-bold text-slate-900">원본 vs 압축본 화질 나란히 비교</h2>
+            <p id="comparisonSubTitle" class="text-xs text-slate-500">선택한 페이지를 렌더링하여 글자 선명도와 이미지 화질 열화를 비교합니다</p>
+          </div>
+        </div>
+
+        <!-- Viewer Controls: Page Quick Change, Zoom, Close -->
+        <div class="flex flex-wrap items-center gap-3">
+          <label class="flex items-center gap-1.5 text-xs text-slate-600 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg">
+            <input type="checkbox" id="syncScrollCheck" checked class="rounded text-indigo-600" />
+            <span>스크롤 동기화</span>
+          </label>
+
+          <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-lg text-xs font-semibold">
+            <button type="button" data-zoom="1" class="zoom-btn px-2.5 py-1 rounded-md bg-white text-indigo-600 shadow-sm">100%</button>
+            <button type="button" data-zoom="1.5" class="zoom-btn px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900">150%</button>
+            <button type="button" data-zoom="2" class="zoom-btn px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900">200% (확대)</button>
+          </div>
+
+          <button id="closeComparisonBtn" type="button" class="text-xs text-slate-500 hover:text-slate-800 px-2.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 flex items-center gap-1">
+            <i data-lucide="x" class="w-3.5 h-3.5"></i>
+            <span>닫기</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Side by Side Panes -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Left Pane: Original -->
+        <div class="flex flex-col rounded-xl border-2 border-slate-200 bg-slate-50 overflow-hidden">
+          <div class="px-4 py-3 bg-white border-b border-slate-200 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-slate-500"></span>
+              <span id="origPreviewHeaderLabel" class="text-sm font-extrabold text-slate-800">원본 (0 MB)</span>
+            </div>
+            <span id="origPageBadge" class="text-[11px] font-medium text-slate-500 bg-slate-100 px-2 py-0.5 rounded">1 페이지 원본 화질</span>
+          </div>
+          <div id="origScrollContainer" class="preview-scroll overflow-auto h-[520px] p-4 flex items-start justify-center bg-slate-200/60">
+            <canvas id="origPreviewCanvas" class="bg-white shadow-md rounded"></canvas>
+          </div>
+        </div>
+
+        <!-- Right Pane: Compressed -->
+        <div class="flex flex-col rounded-xl border-2 border-indigo-300 bg-indigo-50/20 overflow-hidden">
+          <div class="px-4 py-3 bg-white border-b border-indigo-200 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
+              <span id="compPreviewHeaderLabel" class="text-sm font-extrabold text-indigo-700">압축본 (예상 0 MB)</span>
+            </div>
+            <span id="compPageBadge" class="text-[11px] font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded">현재 설정 적용됨</span>
+          </div>
+          <div id="compScrollContainer" class="preview-scroll overflow-auto h-[520px] p-4 flex items-start justify-center bg-slate-200/60">
+            <canvas id="compPreviewCanvas" class="bg-white shadow-md rounded"></canvas>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Configure PDF.js worker
+    if (window['pdfjsLib']) {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+
+    // 한글 등 글꼴이 PDF에 통째로 들어 있지 않은 글자를 그리는 데 필요한 글자 대응표(CMap)와 표준 글꼴 위치
+    // (PDF.js 버전 3.11.174와 같은 버전이어야 함)
+    const PDFJS_OPTS = {
+      cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/cmaps/',
+      cMapPacked: true,
+      standardFontDataUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/standard_fonts/'
+    };
+
+    // Application State
+    let currentFile = null;
+    let currentBuffer = null;
+    let totalPages = 0;
+    let currentDownloadUrl = null;
+    let currentZoom = 1.0;
+
+    let pdfStats = {
+      totalBytes: 0,
+      imageStreamBytes: 0,
+      imageCount: 0,
+      otherStreamBytes: 0,
+      overheadBytes: 0,
+      measuredSampleRatio: null
+    };
+
+    // DOM Elements
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const uploadPrompt = document.getElementById('uploadPrompt');
+    const fileInfoBox = document.getElementById('fileInfoBox');
+    const fileNameText = document.getElementById('fileNameText');
+    const fileSizeText = document.getElementById('fileSizeText');
+    const filePagesText = document.getElementById('filePagesText');
+    const removeFileBtn = document.getElementById('removeFileBtn');
+    const fileStatusBadge = document.getElementById('fileStatusBadge');
+    const recommendBadge = document.getElementById('recommendBadge');
+    const rasterWarning = document.getElementById('rasterWarning');
+
+    const qualityInput = document.getElementById('qualityInput');
+    const qualityValueLabel = document.getElementById('qualityValueLabel');
+    const dpiInput = document.getElementById('dpiInput');
+    const dpiValueLabel = document.getElementById('dpiValueLabel');
+
+    const qualityWrapper = document.getElementById('qualityWrapper');
+    const dpiWrapper = document.getElementById('dpiWrapper');
+    const engineRuleNotice = document.getElementById('engineRuleNotice');
+
+    const compressBtn = document.getElementById('compressBtn');
+    const progressStatusText = document.getElementById('progressStatusText');
+    const progressPercentText = document.getElementById('progressPercentText');
+    const progressBar = document.getElementById('progressBar');
+    const origSizeMetric = document.getElementById('origSizeMetric');
+    const estSizeMetric = document.getElementById('estSizeMetric');
+    const estRatioSub = document.getElementById('estRatioSub');
+    const compSizeMetric = document.getElementById('compSizeMetric');
+    const compRatioSub = document.getElementById('compRatioSub');
+    const resultSummaryBox = document.getElementById('resultSummaryBox');
+    const engineReportText = document.getElementById('engineReportText');
+    const resultHintText = document.getElementById('resultHintText');
+    const savedBadgeText = document.getElementById('savedBadgeText');
+    const downloadLink = document.getElementById('downloadLink');
+
+    // 압축 결과가 있을 때만 다운로드 버튼을 누를 수 있게 함
+    function setDownloadEnabled(enabled) {
+      downloadLink.classList.toggle('opacity-40', !enabled);
+      downloadLink.classList.toggle('pointer-events-none', !enabled);
+      downloadLink.setAttribute('aria-disabled', String(!enabled));
+      downloadLink.tabIndex = enabled ? 0 : -1;
+    }
+
+    // Comparison Preview Elements
+    const previewPageSelect = document.getElementById('previewPageSelect');
+    const comparePreviewBtn = document.getElementById('comparePreviewBtn');
+    const comparisonViewerSection = document.getElementById('comparisonViewerSection');
+    const closeComparisonBtn = document.getElementById('closeComparisonBtn');
+    const origPreviewHeaderLabel = document.getElementById('origPreviewHeaderLabel');
+    const compPreviewHeaderLabel = document.getElementById('compPreviewHeaderLabel');
+    const origPageBadge = document.getElementById('origPageBadge');
+    const compPageBadge = document.getElementById('compPageBadge');
+    const origPreviewCanvas = document.getElementById('origPreviewCanvas');
+    const compPreviewCanvas = document.getElementById('compPreviewCanvas');
+    const origScrollContainer = document.getElementById('origScrollContainer');
+    const compScrollContainer = document.getElementById('compScrollContainer');
+    const syncScrollCheck = document.getElementById('syncScrollCheck');
+
+    // Utility: Format Bytes
+    function formatBytes(bytes) {
+      if (!bytes || bytes <= 0) return '0 B';
+      const k = 1024;
+      const sizes = ['B', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    function setProgress(percent, status) {
+      const clamped = Math.max(0, Math.min(100, Math.round(percent)));
+      progressBar.style.width = `${clamped}%`;
+      progressPercentText.textContent = `${clamped}%`;
+      if (status) progressStatusText.textContent = status;
+    }
+
+    function getCurrentOptions() {
+      const selectedModeEl = document.querySelector('input[name="engineMode"]:checked');
+      return {
+        mode: selectedModeEl ? selectedModeEl.value : 'FAST_PDFLIB',
+        quality: parseInt(qualityInput.value, 10) / 100,
+        dpi: parseInt(dpiInput.value, 10)
+      };
+    }
+
+    // DYNAMIC ENGINE-BASED OPTION ENABLER / DISABLER
+    function updateEngineOptionStates() {
+      const mode = getCurrentOptions().mode;
+
+      if (mode === 'FAST_PDFLIB') {
+        setControlEnabled(qualityInput, qualityWrapper, true);
+        setControlEnabled(dpiInput, dpiWrapper, true);
+        engineRuleNotice.textContent = '표준 압축: 사진 화질·해상도 적용';
+      } else if (mode === 'DEEP_GS_WASM') {
+        setControlEnabled(qualityInput, qualityWrapper, true);
+        setControlEnabled(dpiInput, dpiWrapper, true);
+        engineRuleNotice.textContent = '정밀 압축: 해상도 프리셋 적용 (고급)';
+      } else if (mode === 'EXTREME_RASTER') {
+        setControlEnabled(qualityInput, qualityWrapper, true);
+        setControlEnabled(dpiInput, dpiWrapper, true);
+        engineRuleNotice.textContent = '최대 압축: 쪽 전체 이미지 화질·해상도';
+      }
+    }
+
+    function setControlEnabled(inputEl, wrapperEl, enabled) {
+      inputEl.disabled = !enabled;
+      if (enabled) {
+        wrapperEl.classList.remove('opacity-40', 'bg-slate-100');
+        wrapperEl.classList.add('bg-slate-50');
+      } else {
+        wrapperEl.classList.add('opacity-40', 'bg-slate-100');
+        wrapperEl.classList.remove('bg-slate-50');
+      }
+    }
+
+    // REAL-TIME ESTIMATED SIZE CALCULATOR
+    function calculateEstimatedSizeBytes() {
+      if (!currentBuffer || pdfStats.totalBytes === 0) return 0;
+
+      const opts = getCurrentOptions();
+      const total = pdfStats.totalBytes;
+      const imgBytes = pdfStats.imageStreamBytes;
+      const nonImgBytes = Math.max(0, total - imgBytes);
+
+      // 해상도에 따른 대략적인 크기 비율(면적 비례, 300dpi 이상은 거의 줄지 않음). 실측값이 나오기 전 잠깐만 쓰임
+      const dpiFactor = Math.min(1, Math.pow(opts.dpi / 200, 2));
+      const qFactor = Math.pow(opts.quality, 1.55);
+
+      let estimated = total;
+
+      if (opts.mode === 'FAST_PDFLIB') {
+        if (imgBytes > 0) {
+          const compressedImg = imgBytes * Math.min(0.95, dpiFactor * qFactor * 1.35 + 0.08);
+          const overheadFactor = 0.92 * 0.90;
+          estimated = compressedImg + nonImgBytes * overheadFactor;
+        } else {
+          const structOnly = total * 0.93 * 0.90;
+          const perPageRasterEst = totalPages * 145000 * Math.pow(opts.dpi / 150, 2) * qFactor;
+          estimated = Math.min(structOnly, perPageRasterEst);
+        }
+      } else if (opts.mode === 'DEEP_GS_WASM') {
+        const compressedImg = imgBytes * Math.min(0.90, dpiFactor * qFactor * 1.15 + 0.06);
+        const compressedNonImg = nonImgBytes * Math.min(0.9, 0.48 + (opts.dpi - 72) / 228 * 0.4);
+        estimated = compressedImg + compressedNonImg;
+      } else if (opts.mode === 'EXTREME_RASTER') {
+        const basePageBytes = 175000 * Math.pow(opts.dpi / 150, 2);
+        const rasterEst = totalPages * basePageBytes * (0.35 + 0.85 * qFactor);
+        estimated = Math.min(total * dpiFactor * (0.4 + 0.7 * qFactor), rasterEst);
+      }
+
+      estimated = Math.min(total, estimated);
+
+      return Math.max(8192, Math.round(estimated));
+    }
+
+    function updateRealTimeEstimateUI() {
+      if (!currentBuffer || !currentFile) {
+        estSizeMetric.textContent = '-';
+        estRatioSub.textContent = '조건 변경 시 자동 계산';
+        return;
+      }
+
+      const origBytes = currentBuffer.byteLength;
+      const best = getBestEstimate();
+      const estBytes = best.bytes;
+      const savedBytes = Math.max(0, origBytes - estBytes);
+      const savedPct = origBytes > 0 ? ((savedBytes / origBytes) * 100).toFixed(1) : '0.0';
+
+      estSizeMetric.textContent = `약 ${formatBytes(estBytes)}`;
+      if (best.measured) {
+        estRatioSub.textContent = savedBytes > 0 ? `-${savedPct}% · ${best.note}` : `이미 최적화됨 · ${best.note}`;
+      } else {
+        estRatioSub.textContent = '실측 계산 중…';
+      }
+
+      origPreviewHeaderLabel.textContent = `원본 (${formatBytes(origBytes)})`;
+      compPreviewHeaderLabel.textContent = `압축본 (예상 약 ${formatBytes(estBytes)} / -${savedPct}%)`;
+    }
+
+    // ===== 실측 기반 예상 용량 =====
+    // 공식으로 짐작하지 않고, 실제 압축에 쓰는 함수 그대로 이미지 몇 개(또는 쪽 몇 장)를
+    // 직접 압축해 보고 그 결과로 전체 크기를 추정한다.
+    const estState = { fileKey: 0, structure: null, structureP: null, results: new Map(), timer: null, runId: 0 };
+    const estimateKey = (o) => `${o.mode}|${o.quality}|${o.dpi}`;
+
+    function resetMeasuredEstimate() {
+      estState.fileKey++;
+      estState.structure = null;
+      estState.structureP = null;
+      estState.results.clear();
+      clearTimeout(estState.timer);
+    }
+
+    function getBestEstimate() {
+      const r = currentBuffer ? estState.results.get(estimateKey(getCurrentOptions())) : null;
+      return r ? { bytes: r.bytes, measured: true, note: r.note } : { bytes: calculateEstimatedSizeBytes(), measured: false };
+    }
+
+    // 표준 압축의 '구조 정리'(메타데이터 비우기 + 새 문서로 쪽 복사 + 객체 스트림 저장)만 했을 때의 실제 크기와,
+    // 그 결과 안에 남아 표준 압축이 다시 압축하게 될 이미지 목록. 화질·해상도와 무관해서 파일당 한 번만 계산한다.
+    function getStructureInfo() {
+      if (estState.structure) return Promise.resolve(estState.structure);
+      if (estState.structureP) return estState.structureP;
+      const buf = currentBuffer, key = estState.fileKey;
+      const p = (async () => {
+        const pdfDoc = await PDFLib.PDFDocument.load(buf.slice(0), { ignoreEncryption: true });
+        pdfDoc.setTitle(''); pdfDoc.setAuthor(''); pdfDoc.setSubject('');
+        pdfDoc.setKeywords([]); pdfDoc.setProducer(''); pdfDoc.setCreator('');
+        const cleanDoc = await PDFLib.PDFDocument.create();
+        const copied = await cleanDoc.copyPages(pdfDoc, pdfDoc.getPageIndices());
+        copied.forEach(pg => cleanDoc.addPage(pg));
+        const saved = await cleanDoc.save({ useObjectStreams: true, addDefaultPage: false });
+        const scan = collectImageInfos(cleanDoc, true);
+        return { size: saved.byteLength, images: scan.images.filter((i) => i.route), maxSide: scan.maxSide, doc: cleanDoc };
+      })();
+      estState.structureP = p;
+      return p.then((r) => { if (key === estState.fileKey) { estState.structure = r; estState.structureP = null; } return r; },
+                    (e) => { if (key === estState.fileKey) estState.structureP = null; throw e; });
+    }
+
+    // 표준 압축: 이미지를 용량 순으로 줄 세워 전체 이미지 용량을 10등분하고, 구간마다 대표 이미지를
+    // 실제로 다시 압축해 본 줄어든 비율을 그 구간 용량에 곱한다. 이미지가 10개 이하이면 전부 실측한다.
+    async function measureEngine1(opts, isStale) {
+      const st = await getStructureInfo();
+      if (isStale()) return null;
+      const imgs = [...st.images].sort((a, b) => a.len - b.len);
+      const total = imgs.reduce((a, b) => a + b.len, 0);
+      // 이미지를 크기순으로 줄 세워 전체 이미지 용량을 10구간으로 나누고(큰 이미지 한 장이 한 구간일 수도 있음),
+      // 구간마다 돌아가며 한 장씩 실측한다. 각 구간의 절감률 × 그 구간 용량을 더해 전체 절감량을 추정한다.
+      const K = 10, strata = [];
+      let cur = [], acc = 0, k = 1;
+      for (const im of imgs) {
+        cur.push(im); acc += im.len;
+        if (k < K && acc >= total * k / K) { strata.push(cur); cur = []; while (k < K && acc >= total * k / K) k++; }
+      }
+      if (cur.length) strata.push(cur);
+      let seed = 12345; const rand = () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;
+      const groups = strata.map(list => {
+        const order = [...list];
+        for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(rand() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; }
+        return { order, bytes: list.reduce((x, y) => x + y.len, 0), next: 0, mBytes: 0, mSaved: 0 };
+      });
+      const started = performance.now();
+      let count = 0;
+      for (let round = 0; ; round++) {
+        let did = false;
+        for (const g of groups) {
+          if (g.next >= g.order.length) continue;
+          if (round > 0 && performance.now() - started > 4000) break; // 첫 바퀴는 반드시, 그 뒤로는 약 4초까지만
+          if (isStale()) return null;
+          const im = g.order[g.next++];
+          let ratio = 0;
+          try {
+            const scale = scaleForTargetDpi(im.W, im.H, im.place, opts.dpi, st.maxSide);
+            const r = await recompressImage(st.doc, im, opts.quality, scale, false);
+            if (r) ratio = 1 - r.bytes.length / im.len; // 실제 압축도 줄어들 때만 바꿈
+          } catch (e) {}
+          g.mBytes += im.len; g.mSaved += im.len * ratio; count++; did = true;
+        }
+        if (!did || performance.now() - started > 4000) break;
+      }
+      const saved = groups.reduce((sum, g) => sum + (g.mBytes ? g.bytes * g.mSaved / g.mBytes : 0), 0);
+      return {
+        bytes: Math.max(8192, Math.round(st.size - saved)),
+        note: !imgs.length ? '구조 정리 실측' : count === imgs.length ? `이미지 ${count}개 모두 실측` : `이미지 ${count}/${imgs.length}개 실측`
+      };
+    }
+
+    // 최대 압축: 앞·중간·뒤에서 고른 쪽(최대 5쪽)을 실제 설정으로 이미지화해 평균 크기 × 쪽 수.
+    async function measureEngine3(opts, isStale) {
+      const pdf = await pdfjsLib.getDocument({ data: currentBuffer.slice(0), ...PDFJS_OPTS }).promise;
+      try {
+        const n = pdf.numPages;
+        const pageNums = [...new Set([0, 1, 2, 3, 4].map(k => 1 + Math.round(k * (n - 1) / 4)))];
+        const scale = opts.dpi / 72; // 실제 압축과 같은 배율
+        let sum = 0;
+        for (const pn of pageNums) {
+          if (isStale()) return null;
+          const page = await pdf.getPage(pn);
+          const canvas = await renderPageToNewCanvas(page, page.getViewport({ scale }));
+          const url = canvas.toDataURL('image/jpeg', opts.quality);
+          sum += Math.round(url.split(',')[1].length * 3 / 4);
+          canvas.width = canvas.height = 0;
+          page.cleanup();
+        }
+        return { bytes: Math.round(sum / pageNums.length * n + 2000 + n * 500), note: `${pageNums.length}쪽 실측` };
+      } finally {
+        pdf.destroy();
+      }
+    }
+
+    // 실제 압축 실행(compressBtn)과 같은 순서로 추정. 표준 압축은 글자를 이미지로 바꾸지 않으므로 이미지화 전환은 없다.
+    async function measureEstimate(opts, isStale) {
+      const orig = currentBuffer.byteLength;
+      let r;
+      if (opts.mode === 'EXTREME_RASTER') {
+        r = await measureEngine3(opts, isStale);
+      } else {
+        r = await measureEngine1(opts, isStale);
+        if (r && opts.mode === 'DEEP_GS_WASM') r.note += ' · 표준 압축 기준';
+      }
+      if (!r) return null;
+      return { bytes: Math.min(orig, r.bytes), note: r.note };
+    }
+
+    function scheduleMeasuredEstimate() {
+      clearTimeout(estState.timer);
+      if (!currentBuffer) return;
+      const opts = getCurrentOptions();
+      const key = estimateKey(opts);
+      if (estState.results.has(key)) { updateRealTimeEstimateUI(); return; }
+      estState.timer = setTimeout(async () => {
+        const runId = ++estState.runId, fileKey = estState.fileKey;
+        const isStale = () => runId !== estState.runId || fileKey !== estState.fileKey;
+        try {
+          const r = await measureEstimate(opts, isStale);
+          if (!r || isStale()) return;
+          estState.results.set(key, r);
+          updateRealTimeEstimateUI();
+        } catch (e) {
+          console.warn('실측 추정 실패', e);
+          if (!isStale()) estRatioSub.textContent = '실측 실패 · 공식 추정값';
+        }
+      }, 450);
+    }
+
+    function onOptionChanged() {
+      updateRealTimeEstimateUI();
+      scheduleMeasuredEstimate();
+      if (!comparisonViewerSection.classList.contains('hidden') && currentBuffer) {
+        renderSideBySidePreview();
+      }
+    }
+
+    // UI Listeners
+    qualityInput.addEventListener('input', () => {
+      const val = qualityInput.value;
+      let desc = '권장';
+      if (val < 50) desc = '고압축';
+      else if (val >= 85) desc = '고화질';
+      qualityValueLabel.textContent = `${val}% (${desc})`;
+      onOptionChanged();
+    });
+
+    dpiInput.addEventListener('change', () => {
+      const val = dpiInput.value;
+      const map = { '72': '72 DPI (모바일/최소)', '150': '150 DPI (웹/화면용)', '220': '220 DPI (인쇄 겸용)', '300': '300 DPI (인쇄용)' };
+      dpiValueLabel.textContent = map[val] || `${val} DPI`;
+      onOptionChanged();
+    });
+
+    document.querySelectorAll('input[name="engineMode"]').forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        if (e.target.value === 'EXTREME_RASTER') {
+          rasterWarning.classList.remove('hidden');
+        } else {
+          rasterWarning.classList.add('hidden');
+        }
+        updateEngineOptionStates();
+        onOptionChanged();
+      });
+    });
+
+    // Synchronized Scroll
+    let isSyncingLeft = false;
+    let isSyncingRight = false;
+
+    origScrollContainer.addEventListener('scroll', () => {
+      if (!syncScrollCheck.checked || isSyncingLeft) {
+        isSyncingLeft = false;
+        return;
+      }
+      isSyncingRight = true;
+      compScrollContainer.scrollTop = origScrollContainer.scrollTop;
+      compScrollContainer.scrollLeft = origScrollContainer.scrollLeft;
+    });
+
+    compScrollContainer.addEventListener('scroll', () => {
+      if (!syncScrollCheck.checked || isSyncingRight) {
+        isSyncingRight = false;
+        return;
+      }
+      isSyncingLeft = true;
+      origScrollContainer.scrollTop = compScrollContainer.scrollTop;
+      origScrollContainer.scrollLeft = compScrollContainer.scrollLeft;
+    });
+
+    // Zoom Buttons
+    document.querySelectorAll('.zoom-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.zoom-btn').forEach(b => {
+          b.className = 'zoom-btn px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900';
+        });
+        btn.className = 'zoom-btn px-2.5 py-1 rounded-md bg-white text-indigo-600 shadow-sm';
+        currentZoom = parseFloat(btn.dataset.zoom) || 1.0;
+        if (currentBuffer && !comparisonViewerSection.classList.contains('hidden')) {
+          renderSideBySidePreview();
+        }
+      });
+    });
+
+    closeComparisonBtn.addEventListener('click', () => {
+      comparisonViewerSection.classList.add('hidden');
+    });
+
+    previewPageSelect.addEventListener('change', () => {
+      if (currentBuffer && !comparisonViewerSection.classList.contains('hidden')) {
+        renderSideBySidePreview();
+      }
+    });
+
+    comparePreviewBtn.addEventListener('click', async () => {
+      if (!currentBuffer) return;
+      comparisonViewerSection.classList.remove('hidden');
+      await renderSideBySidePreview();
+      comparisonViewerSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // Drag & Drop Upload
+    dropZone.addEventListener('click', (e) => {
+      if (e.target.closest('#removeFileBtn')) return;
+      fileInput.click();
+    });
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('drag-active');
+    });
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('drag-active');
+    });
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('drag-active');
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        handleFileSelect(e.dataTransfer.files[0]);
+      }
+    });
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files[0]) {
+        handleFileSelect(e.target.files[0]);
+      }
+    });
+
+    removeFileBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      currentFile = null;
+      currentBuffer = null;
+      resetMeasuredEstimate();
+      fileInput.value = '';
+      uploadPrompt.classList.remove('hidden');
+      fileInfoBox.classList.add('hidden');
+      fileStatusBadge.classList.add('hidden');
+      recommendBadge.classList.add('hidden');
+      comparisonViewerSection.classList.add('hidden');
+      compressBtn.disabled = true;
+      comparePreviewBtn.disabled = true;
+      previewPageSelect.disabled = true;
+      resultSummaryBox.classList.add('hidden');
+      setDownloadEnabled(false);
+      origSizeMetric.textContent = '-';
+      estSizeMetric.textContent = '-';
+      estRatioSub.textContent = '조건 변경 시 자동 계산';
+      compSizeMetric.textContent = '-';
+      compRatioSub.textContent = '실행 후 확정';
+      setProgress(0, '파일을 업로드해 주세요');
+    });
+
+    async function handleFileSelect(file) {
+      if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+        alert('PDF 파일만 업로드할 수 있습니다.');
+        return;
+      }
+
+      currentFile = file;
+      currentBuffer = await file.arrayBuffer();
+      resetMeasuredEstimate();
+
+      uploadPrompt.classList.add('hidden');
+      fileInfoBox.classList.remove('hidden');
+      fileStatusBadge.classList.remove('hidden');
+      fileStatusBadge.textContent = '준비 완료';
+
+      fileNameText.textContent = file.name;
+      fileSizeText.textContent = formatBytes(file.size);
+      origSizeMetric.textContent = formatBytes(file.size);
+      compSizeMetric.textContent = '-';
+      compRatioSub.textContent = '실행 후 확정';
+      resultSummaryBox.classList.add('hidden');
+      setDownloadEnabled(false);
+      compressBtn.disabled = false;
+      comparePreviewBtn.disabled = false;
+      previewPageSelect.disabled = false;
+
+      setProgress(0, '문서 구조 분석 중...');
+
+      try {
+        const pdfDoc = await PDFLib.PDFDocument.load(currentBuffer, { ignoreEncryption: true });
+        totalPages = pdfDoc.getPageCount();
+        filePagesText.textContent = `총 ${totalPages}페이지`;
+
+        previewPageSelect.innerHTML = '';
+        for (let i = 1; i <= totalPages; i++) {
+          const opt = document.createElement('option');
+          opt.value = String(i);
+          opt.className = 'text-slate-900';
+          opt.textContent = i === 1 ? `1 페이지 (기본)` : `${i} 페이지`;
+          previewPageSelect.appendChild(opt);
+        }
+
+        let imageCount = 0;
+        let imageStreamBytes = 0;
+        let otherStreamBytes = 0;
+        let compressibleCount = 0;
+        for (const [, obj] of pdfDoc.context.enumerateIndirectObjects()) {
+          if (obj instanceof PDFLib.PDFRawStream && obj.dict) {
+            const len = obj.contents ? obj.contents.byteLength : 0;
+            const subtype = obj.dict.get(PDFLib.PDFName.of('Subtype'));
+            if (subtype && subtype.toString() === '/Image') { imageCount++; imageStreamBytes += len; }
+            else otherStreamBytes += len;
+          }
+        }
+        try { compressibleCount = collectImageInfos(pdfDoc, false).images.filter((i) => i.route).length; } catch (e) {}
+
+        pdfStats = {
+          totalBytes: file.size,
+          imageStreamBytes,
+          imageCount,
+          otherStreamBytes,
+          overheadBytes: Math.max(0, file.size - imageStreamBytes - otherStreamBytes),
+          measuredSampleRatio: null
+        };
+
+        recommendBadge.classList.remove('hidden');
+        if (imageCount > 0) {
+          recommendBadge.textContent = compressibleCount > 0
+            ? `💡 압축 가능한 사진 ${compressibleCount}개 → 표준 압축 추천`
+            : `💡 사진 ${imageCount}개 (재압축 대상 아님) → 표준 압축으로 구조 정리`;
+        } else {
+          recommendBadge.textContent = `💡 텍스트 위주 문서 → 표준 압축 (더 줄이려면 최대 압축)`;
+        }
+
+        updateEngineOptionStates();
+        updateRealTimeEstimateUI();
+        scheduleMeasuredEstimate();
+        setProgress(0, '압축 준비 완료');
+      } catch (err) {
+        filePagesText.textContent = '페이지 수 확인 불가';
+        pdfStats = {
+          totalBytes: file.size,
+          imageStreamBytes: Math.round(file.size * 0.7),
+          imageCount: 1,
+          otherStreamBytes: Math.round(file.size * 0.2),
+          overheadBytes: Math.round(file.size * 0.1),
+          measuredSampleRatio: null
+        };
+        updateEngineOptionStates();
+        updateRealTimeEstimateUI();
+        scheduleMeasuredEstimate();
+        setProgress(0, '압축 준비 완료');
+      }
+    }
+
+    // 미리보기가 겹쳐 실행돼도 오류가 나지 않게 하는 장치
+    // - 실행할 때마다 번호를 올리고, 늦게 끝난 이전 실행의 결과는 버림
+    // - 화면의 캔버스에 직접 render 하지 않고 매번 새 캔버스에 그린 뒤 복사함
+    //   (같은 캔버스에 render 두 개가 동시에 걸리면 PDF.js가 오류를 냄)
+    let previewRunId = 0;
+    const compareBtnDefaultHtml = comparePreviewBtn.innerHTML;
+
+    async function renderPageToNewCanvas(page, viewport) {
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(32, Math.floor(viewport.width));
+      canvas.height = Math.max(32, Math.floor(viewport.height));
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      await page.render({ canvasContext: ctx, viewport }).promise;
+      return canvas;
+    }
+
+    function copyToCanvas(target, source) {
+      target.width = source.width;
+      target.height = source.height;
+      target.getContext('2d').drawImage(source, 0, 0);
+    }
+
+    async function renderSideBySidePreview() {
+      if (!currentBuffer) return;
+      const runId = ++previewRunId;
+      const isStale = () => runId !== previewRunId;
+
+      const selectedPageNum = parseInt(previewPageSelect.value, 10) || 1;
+      const opts = getCurrentOptions();
+
+      comparePreviewBtn.disabled = true;
+      comparePreviewBtn.innerHTML = `<span>렌더링 중...</span>`;
+
+      let pdf = null;
+      try {
+        pdf = await pdfjsLib.getDocument({ data: currentBuffer.slice(0), ...PDFJS_OPTS }).promise;
+        const page = await pdf.getPage(selectedPageNum);
+
+        const baseDisplayScale = 1.25 * currentZoom;
+        const origViewport = page.getViewport({ scale: baseDisplayScale });
+        const origCanvas = await renderPageToNewCanvas(page, origViewport);
+        if (isStale()) return;
+
+        // 압축본 미리보기: 실제 압축과 같은 방법으로 이 한 쪽만 압축해서 보여 준다.
+        let compSource;
+        if (opts.mode === 'EXTREME_RASTER') {
+          // 방식 3: 고른 DPI 그대로(배율 = DPI ÷ 72) 쪽 전체를 JPEG로 만든 뒤 화면 크기로 늘려 보여 줌
+          const rasterCanvas = await renderPageToNewCanvas(page, page.getViewport({ scale: opts.dpi / 72 }));
+          if (isStale()) return;
+          const compImg = new Image();
+          await new Promise((resolve, reject) => {
+            compImg.onload = resolve;
+            compImg.onerror = reject;
+            compImg.src = rasterCanvas.toDataURL('image/jpeg', opts.quality);
+          });
+          compSource = compImg;
+        } else {
+          // 방식 1·2: 이 쪽만 떼어 사진을 실제로 다시 압축한 PDF를 만들어 그대로 그림 (글자는 원본처럼 선명)
+          const singleOrigDoc = await PDFLib.PDFDocument.load(currentBuffer.slice(0), { ignoreEncryption: true });
+          const singleCleanDoc = await PDFLib.PDFDocument.create();
+          const [copiedSinglePage] = await singleCleanDoc.copyPages(singleOrigDoc, [selectedPageNum - 1]);
+          singleCleanDoc.addPage(copiedSinglePage);
+          await recompressDocImages(singleCleanDoc, opts);
+          const singleBytes = await singleCleanDoc.save({ useObjectStreams: true });
+          if (isStale()) return;
+          const singlePdf = await pdfjsLib.getDocument({ data: singleBytes, ...PDFJS_OPTS }).promise;
+          try {
+            const singlePage = await singlePdf.getPage(1);
+            compSource = await renderPageToNewCanvas(singlePage, singlePage.getViewport({ scale: baseDisplayScale }));
+          } finally {
+            singlePdf.destroy();
+          }
+        }
+        if (isStale()) return;
+
+        // 가장 마지막 실행만 화면에 반영
+        copyToCanvas(origPreviewCanvas, origCanvas);
+        compPreviewCanvas.width = origPreviewCanvas.width;
+        compPreviewCanvas.height = origPreviewCanvas.height;
+        const compCtx = compPreviewCanvas.getContext('2d');
+        compCtx.fillStyle = '#FFFFFF';
+        compCtx.fillRect(0, 0, compPreviewCanvas.width, compPreviewCanvas.height);
+        compCtx.imageSmoothingEnabled = true;
+        compCtx.drawImage(compSource, 0, 0, compPreviewCanvas.width, compPreviewCanvas.height);
+
+        updateRealTimeEstimateUI();
+        const estTotalBytes = getBestEstimate().bytes;
+        const origTotalBytes = currentBuffer.byteLength;
+        const savedPct = origTotalBytes > 0
+          ? Math.max(0, ((origTotalBytes - estTotalBytes) / origTotalBytes) * 100).toFixed(1)
+          : '0.0';
+
+        origPreviewHeaderLabel.textContent = `원본 (${formatBytes(origTotalBytes)})`;
+        compPreviewHeaderLabel.textContent = `압축본 (예상 약 ${formatBytes(estTotalBytes)} · -${savedPct}%)`;
+
+        origPageBadge.textContent = `${selectedPageNum} 페이지 원본`;
+        compPageBadge.textContent = `${selectedPageNum} 페이지 미리보기 (${opts.dpi} DPI · 품질 ${Math.round(opts.quality * 100)}%)`;
+      } catch (err) {
+        if (!isStale()) console.error(err);
+      } finally {
+        if (pdf) pdf.destroy();
+        if (!isStale()) {
+          comparePreviewBtn.disabled = false;
+          comparePreviewBtn.innerHTML = compareBtnDefaultHtml;
+          lucide.createIcons();
+        }
+      }
+    }
+
+    // ===== 사진의 실제 해상도 파악 =====
+    // 쪽의 그리기 명령을 읽어 사진마다 쪽 위에 몇 pt 크기로 놓였는지 찾는다(1pt = 1/72인치).
+    // 놓인 크기(인치) × 목표 DPI = 필요한 픽셀 수. 사진 픽셀이 그보다 많을 때만 그만큼 줄인다.
+    const PN = (n) => PDFLib.PDFName.of(n);
+    const IDENTITY = [1, 0, 0, 1, 0, 0];
+    function mulMatrix(m, n) {
+      return [m[0] * n[0] + m[1] * n[2], m[0] * n[1] + m[1] * n[3],
+              m[2] * n[0] + m[3] * n[2], m[2] * n[1] + m[3] * n[3],
+              m[4] * n[0] + m[5] * n[2] + n[4], m[4] * n[1] + m[5] * n[3] + n[5]];
+    }
+    function decodeContents(ctx, contents) {
+      const parts = [];
+      const add = (o) => {
+        o = ctx.lookup(o);
+        if (o instanceof PDFLib.PDFRawStream) { try { parts.push(PDFLib.decodePDFRawStream(o).decode()); } catch (e) {} }
+      };
+      if (contents instanceof PDFLib.PDFArray) contents.asArray().forEach(add); else if (contents) add(contents);
+      const out = new Uint8Array(parts.reduce((a, b) => a + b.length + 1, 0));
+      let pos = 0;
+      for (const part of parts) { out.set(part, pos); pos += part.length; out[pos++] = 10; }
+      return out;
+    }
+    // 그리기 명령을 낱말 단위로 읽어 연산자(q, Q, cm, Do 등)마다 onOp를 부른다. 문자열·인라인 이미지는 건너뜀.
+    function scanContent(b, onOp) {
+      const n = b.length, stack = [];
+      const ws = (c) => c === 0 || c === 9 || c === 10 || c === 12 || c === 13 || c === 32;
+      const delim = (c) => c === 40 || c === 41 || c === 60 || c === 62 || c === 91 || c === 93 || c === 123 || c === 125 || c === 47 || c === 37;
+      const text = (s0, e0) => { let t = ''; for (let k = s0; k < e0; k++) t += String.fromCharCode(b[k]); return t; };
+      let i = 0;
+      while (i < n) {
+        const c = b[i];
+        if (ws(c)) { i++; continue; }
+        if (c === 37) { while (i < n && b[i] !== 10 && b[i] !== 13) i++; continue; }
+        if (c === 40) { let depth = 1; i++; while (i < n && depth) { if (b[i] === 92) i += 2; else { if (b[i] === 40) depth++; else if (b[i] === 41) depth--; i++; } } stack.push(null); continue; }
+        if (c === 60) { if (b[i + 1] === 60) { i += 2; continue; } while (i < n && b[i] !== 62) i++; i++; stack.push(null); continue; }
+        if (c === 62 || c === 91 || c === 93 || c === 123 || c === 125) { i++; continue; }
+        if (c === 47) { let j = i + 1; while (j < n && !ws(b[j]) && !delim(b[j])) j++; stack.push({ name: text(i + 1, j) }); i = j; continue; }
+        let j = i; while (j < n && !ws(b[j]) && !delim(b[j])) j++;
+        if (j === i) { i++; continue; }
+        const tok = text(i, j); i = j;
+        if (/^[+\-]?(\d+\.?\d*|\.\d+)$/.test(tok)) { stack.push(Number(tok)); continue; }
+        if (tok === 'BI') {
+          let k = i;
+          while (k < n - 2 && !(b[k] === 73 && b[k + 1] === 68 && ws(b[k - 1]) && ws(b[k + 2]))) k++;
+          k += 3;
+          while (k < n - 1 && !(ws(b[k - 1]) && b[k] === 69 && b[k + 1] === 73 && (k + 2 >= n || ws(b[k + 2])))) k++;
+          i = k + 2; stack.length = 0; continue;
+        }
+        onOp(tok, stack);
+        stack.length = 0;
+      }
+    }
+    // 사진(ref.tag)마다 가장 크게 놓인 크기 {w, h}(pt). 사진의 가로축·세로축 방향 길이라 회전돼 있어도 맞음.
+    function collectImagePlacements(pdfDoc) {
+      const ctx = pdfDoc.context, result = new Map();
+      result.pages = new Map(); // 사진 → 놓인 쪽 번호(0부터) 집합
+      let curPage = 0;
+      const walk = (bytes, resources, startCtm, depth) => {
+        let ctm = startCtm; const saved = [];
+        const xobjects = resources instanceof PDFLib.PDFDict ? resources.lookup(PN('XObject')) : null;
+        scanContent(bytes, (op, st) => {
+          if (op === 'q') saved.push(ctm);
+          else if (op === 'Q') { if (saved.length) ctm = saved.pop(); }
+          else if (op === 'cm') { const m = st.slice(-6); if (m.length === 6 && m.every(x => typeof x === 'number')) ctm = mulMatrix(m, ctm); }
+          else if (op === 'Do' && xobjects instanceof PDFLib.PDFDict) {
+            const last = st[st.length - 1];
+            if (!last || !last.name) return;
+            const nm = last.name.replace(/#([0-9a-fA-F]{2})/g, (_, h) => String.fromCharCode(parseInt(h, 16)));
+            const ref = xobjects.get(PN(nm));
+            const xo = ctx.lookup(ref);
+            if (!(xo instanceof PDFLib.PDFRawStream)) return;
+            const sub = xo.dict.lookup(PN('Subtype'));
+            if (sub === PN('Image') && ref instanceof PDFLib.PDFRef) {
+              const w = Math.hypot(ctm[0], ctm[1]), h = Math.hypot(ctm[2], ctm[3]);
+              const prev = result.get(ref.tag);
+              let ps = result.pages.get(ref.tag); if (!ps) result.pages.set(ref.tag, ps = new Set()); ps.add(curPage);
+              if (!prev || w * h > prev.w * prev.h) result.set(ref.tag, { w, h }); // 여러 번 쓰이면 크게 놓인 쪽 기준(화질 보호)
+            } else if (sub === PN('Form') && depth < 8) {
+              const mtx = xo.dict.lookup(PN('Matrix'));
+              const m = mtx instanceof PDFLib.PDFArray && mtx.size() === 6
+                ? mtx.asArray().map(x => { const v = ctx.lookup(x); return v instanceof PDFLib.PDFNumber ? v.asNumber() : 0; })
+                : IDENTITY;
+              const res = xo.dict.lookup(PN('Resources'));
+              try { walk(PDFLib.decodePDFRawStream(xo).decode(), res instanceof PDFLib.PDFDict ? res : resources, mulMatrix(m, ctm), depth + 1); } catch (e) {}
+            }
+          }
+        });
+      };
+      const allPages = pdfDoc.getPages();
+      for (let pi = 0; pi < allPages.length; pi++) {
+        const page = allPages[pi]; curPage = pi;
+        try { walk(decodeContents(ctx, page.node.Contents()), page.node.Resources(), IDENTITY, 0); } catch (e) {}
+      }
+      return result;
+    }
+    function maxPageSidePt(pdfDoc) {
+      let m = 0;
+      for (const pg of pdfDoc.getPages()) { const { width, height } = pg.getSize(); m = Math.max(m, width, height); }
+      return m || 842;
+    }
+    // 줄일 비율: 놓인 크기를 아는 사진은 '놓인 크기 × 목표 DPI', 모르는 사진(주석 속 그림 등)은 쪽 크기 × 목표 DPI를 상한으로.
+    // 이미 목표보다 해상도가 낮으면 1(크기 그대로, 화질만 다시 저장).
+    function scaleForTargetDpi(W, H, place, dpi, maxSidePt) {
+      if (!W || !H) return 1;
+      if (place && place.w > 0.5 && place.h > 0.5) {
+        return Math.min(1, Math.max((place.w / 72 * dpi) / W, (place.h / 72 * dpi) / H));
+      }
+      return Math.min(1, (maxSidePt / 72 * dpi) / Math.max(W, H));
+    }
+    // ===== 이미지 분류 · 디코딩 · 재압축 =====
+    // 원칙: (1) 색 해석이 확실한 이미지만 건드린다
+    //       (2) CMYK·JPEG2000처럼 브라우저가 읽지 못하거나 해석이 갈리는 형식은 PDF.js로 디코딩한다
+    //       (3) 줄지 않았거나 처리에 실패한 이미지는 원본 그대로 둔다
+    const MAX_PIXELS = 14e6;          // 캔버스 한 장의 최대 픽셀 수 (모바일에서도 안전한 한도)
+    const MAX_SOURCE_PIXELS = 60e6;   // 이보다 큰 원본 이미지는 건드리지 않음
+    const MIN_GAIN = 0.97;            // 원본의 97%보다 작아질 때만 교체
+
+    const numValue = (v) => (v instanceof PDFLib.PDFNumber ? v.asNumber() : null);
+    function dictGet(dict, key) {
+      try { return dict.lookup(PN(key)); } catch (e) { return null; }
+    }
+    function nameList(dict) {
+      const f = dictGet(dict, 'Filter');
+      const items = f instanceof PDFLib.PDFArray ? f.asArray() : (f ? [f] : []);
+      return items.map((x) => {
+        const v = dict.context.lookup(x);
+        return v instanceof PDFLib.PDFName ? v.asString().slice(1) : '?';
+      });
+    }
+    // 색 성분 수: 1(흑백) · 3(RGB) · 4(CMYK). 0이면 다루지 않는 색 공간(Indexed, 별색, Lab 등)
+    function colorComponents(cs) {
+      if (cs instanceof PDFLib.PDFName) {
+        const n = cs.asString();
+        return n === '/DeviceRGB' ? 3 : n === '/DeviceGray' ? 1 : n === '/DeviceCMYK' ? 4 : 0;
+      }
+      if (cs instanceof PDFLib.PDFArray && cs.size() > 0) {
+        const kind = cs.lookup(0);
+        if (kind === PN('ICCBased')) {
+          const st = cs.lookup(1);
+          const n = st && st.dict ? numValue(dictGet(st.dict, 'N')) : null;
+          return n === 1 || n === 3 || n === 4 ? n : 0;
+        }
+        if (kind === PN('CalRGB')) return 3;
+        if (kind === PN('CalGray')) return 1;
+      }
+      return 0;
+    }
+    // JPEG 헤더에서 색 성분 수(SOF)를 읽는다. PDF가 말하는 색 공간과 실제 JPEG이 다른지 확인하는 용도
+    function jpegInfo(bytes) {
+      if (!bytes || bytes.length < 4 || bytes[0] !== 0xFF || bytes[1] !== 0xD8) return null;
+      let i = 2;
+      while (i + 4 <= bytes.length) {
+        if (bytes[i] !== 0xFF) { i++; continue; }
+        const m = bytes[i + 1];
+        if (m === 0xFF) { i++; continue; }
+        if (m === 0xD8 || m === 0x01 || (m >= 0xD0 && m <= 0xD7)) { i += 2; continue; }
+        if (m === 0xD9 || m === 0xDA) break;
+        const len = (bytes[i + 2] << 8) | bytes[i + 3];
+        if (m >= 0xC0 && m <= 0xCF && m !== 0xC4 && m !== 0xC8 && m !== 0xCC) return { components: bytes[i + 9] };
+        i += 2 + len;
+      }
+      return null;
+    }
+
+    // 이미지 하나를 분류한다. route: 'bitmap'(브라우저가 직접 디코딩) | 'render'(PDF.js로 디코딩) | null(건드리지 않음)
+    function classifyImage(ref, obj, maskTags) {
+      const d = obj.dict;
+      const info = {
+        ref, tag: ref.tag, obj,
+        W: numValue(dictGet(d, 'Width')) || 0, H: numValue(dictGet(d, 'Height')) || 0,
+        len: obj.contents ? obj.contents.length : 0,
+        route: null, comps: 0, reason: '', place: null
+      };
+      const skip = (why) => { info.reason = why; return info; };
+      if (!info.W || !info.H || !obj.contents) return skip('empty');
+      if (maskTags.has(ref.tag)) return skip('mask');                       // 투명도 마스크는 흑백 그대로 유지
+      const stencil = dictGet(d, 'ImageMask');
+      if (stencil instanceof PDFLib.PDFBool && stencil.asBoolean()) return skip('stencil');
+      if (dictGet(d, 'Mask') instanceof PDFLib.PDFArray) return skip('colorkey'); // 색 지정 투명은 JPEG로 바꾸면 사라짐
+      if ((numValue(dictGet(d, 'SMaskInData')) || 0) > 0) return skip('smaskindata');
+      const sm = dictGet(d, 'SMask');
+      if (sm && sm.dict && sm.dict.get(PN('Matte'))) return skip('matte');   // 투명도 미리 곱한 이미지는 색이 어긋남
+      if (info.len <= 4096 || info.W * info.H < 2500) return skip('small');
+      if (info.W * info.H > MAX_SOURCE_PIXELS) return skip('huge');
+      const names = nameList(d);
+      if (names.some((n) => n === 'CCITTFaxDecode' || n === 'JBIG2Decode' || n === '?')) return skip('filter');
+      const comps = colorComponents(dictGet(d, 'ColorSpace'));
+      if (!comps) return skip('colorspace');
+      const isJpx = names[names.length - 1] === 'JPXDecode';
+      const bpc = numValue(dictGet(d, 'BitsPerComponent')) || 8;
+      if (!isJpx && bpc !== 8) return skip('bpc');
+      info.comps = comps;
+      let plainDecode = true;
+      const dec = dictGet(d, 'Decode');
+      if (dec) {
+        const arr = dec instanceof PDFLib.PDFArray ? dec.asArray().map((x) => numValue(d.context.lookup(x))) : null;
+        plainDecode = !!arr && arr.length === comps * 2 && arr.every((v, i) => v === i % 2);
+      }
+      info.route = 'render';
+      // 일반 RGB·흑백 JPEG이고 헤더의 성분 수가 PDF의 색 공간과 같을 때만 브라우저가 직접 읽는다
+      if (names.length === 1 && names[0] === 'DCTDecode' && plainDecode && comps !== 4) {
+        const j = jpegInfo(obj.contents);
+        if (j && j.components === comps) info.route = 'bitmap';
+      }
+      return info;
+    }
+    // 문서 안의 모든 이미지를 분류한다 (withPlacements: 쪽에 놓인 실제 크기까지 읽을지)
+    function collectImageInfos(doc, withPlacements) {
+      const maskTags = new Set(), all = [];
+      for (const [ref, obj] of doc.context.enumerateIndirectObjects()) {
+        if (!(obj instanceof PDFLib.PDFRawStream) || !obj.dict) continue;
+        const sub = dictGet(obj.dict, 'Subtype');
+        if (!sub || sub.toString() !== '/Image') continue;
+        all.push([ref, obj]);
+        for (const k of ['SMask', 'Mask']) {
+          const v = obj.dict.get(PN(k));
+          if (v instanceof PDFLib.PDFRef) maskTags.add(v.tag);
+        }
+      }
+      const placements = withPlacements ? collectImagePlacements(doc) : null;
+      const images = all.map(([ref, obj]) => {
+        const info = classifyImage(ref, obj, maskTags);
+        if (placements) info.place = placements.get(ref.tag) || null;
+        return info;
+      });
+      return { images, placements, maxSide: withPlacements ? maxPageSidePt(doc) : 842 };
+    }
+
+    // PDF.js 작업자는 하나를 계속 재사용한다 (이미지마다 새로 만들면 느림)
+    let pdfWorkerShared = null;
+    function getPdfWorker() {
+      if (pdfWorkerShared === null) {
+        try { pdfWorkerShared = window.pdfjsLib && pdfjsLib.PDFWorker ? new pdfjsLib.PDFWorker() : false; }
+        catch (e) { pdfWorkerShared = false; }
+      }
+      return pdfWorkerShared || null;
+    }
+    function newWhiteCanvas(w, h) {
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      const ctx = c.getContext('2d');
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, w, h);
+      return [c, ctx];
+    }
+    // 일반 JPEG: 브라우저가 읽어서 목표 크기로 그린다
+    async function decodeBitmapToCanvas(info, ow, oh) {
+      const blob = new Blob([info.obj.contents], { type: 'image/jpeg' });
+      let bmp;
+      try { bmp = await createImageBitmap(blob, { imageOrientation: 'none' }); } // PDF는 JPEG의 회전 정보(EXIF)를 쓰지 않음
+      catch (e) { bmp = await createImageBitmap(blob); }
+      const [c, ctx] = newWhiteCanvas(ow, oh);
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(bmp, 0, 0, ow, oh);
+      if (bmp.close) bmp.close();
+      return c;
+    }
+    // CMYK·JPEG2000·Decode 배열 등: 이미지 한 장만 담은 임시 PDF를 만들어 PDF.js로 그린다.
+    // PDF.js는 PDF의 모든 이미지 형식과 색 변환을 이미 알고 있어서, 화면에 보이는 색 그대로 얻을 수 있다.
+    // 투명도(SMask)는 빼고 그려서 불투명한 색 데이터만 얻는다.
+    async function renderImageViaPdfJs(doc, info, sc, ow, oh) {
+      const tmp = await PDFLib.PDFDocument.create({ updateMetadata: false });
+      const dict = info.obj.dict.clone(doc.context);
+      for (const k of ['SMask', 'Mask', 'Metadata']) dict.delete(PN(k));
+      const copied = PDFLib.PDFObjectCopier.for(doc.context, tmp.context).copy(PDFLib.PDFRawStream.of(dict, info.obj.contents));
+      const imgRef = tmp.context.register(copied);
+      const page = tmp.addPage([info.W, info.H]);
+      const xname = page.node.newXObject('Im', imgRef);
+      page.pushOperators(
+        PDFLib.pushGraphicsState(),
+        PDFLib.concatTransformationMatrix(info.W, 0, 0, info.H, 0, 0),
+        PDFLib.drawObject(xname),
+        PDFLib.popGraphicsState()
+      );
+      const bytes = await tmp.save({ useObjectStreams: false });
+      const params = { data: bytes, isEvalSupported: false };
+      const worker = getPdfWorker();
+      if (worker) params.worker = worker;
+      const pdf = await pdfjsLib.getDocument(params).promise;
+      try {
+        const pg = await pdf.getPage(1);
+        const [c, ctx] = newWhiteCanvas(ow, oh);
+        await pg.render({ canvasContext: ctx, viewport: pg.getViewport({ scale: sc }) }).promise;
+        return c;
+      } finally {
+        pdf.destroy();
+      }
+    }
+    // 이미지 한 장을 목표 해상도·화질로 다시 압축한다. 줄지 않으면 null(원본 유지)
+    async function recompressImage(doc, info, quality, scale, forceRender) {
+      let sc = Math.min(1, scale);
+      if (info.W * info.H * sc * sc > MAX_PIXELS) sc = Math.sqrt(MAX_PIXELS / (info.W * info.H));
+      const ow = Math.max(1, Math.round(info.W * sc)), oh = Math.max(1, Math.round(info.H * sc));
+      const useBitmap = info.route === 'bitmap' && !forceRender;
+      const canvas = useBitmap ? await decodeBitmapToCanvas(info, ow, oh) : await renderImageViaPdfJs(doc, info, sc, ow, oh);
+      const dataUrl = canvas.toDataURL('image/jpeg', quality);
+      canvas.width = canvas.height = 0;
+      const bin = atob(dataUrl.split(',')[1]);
+      const bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      if (bytes.length >= info.len * MIN_GAIN) return null;
+      return { bytes, width: ow, height: oh };
+    }
+    function applyReplacement(obj, r) {
+      obj.contents = r.bytes;
+      obj.dict.set(PN('Width'), PDFLib.PDFNumber.of(r.width));
+      obj.dict.set(PN('Height'), PDFLib.PDFNumber.of(r.height));
+      obj.dict.set(PN('Filter'), PN('DCTDecode'));
+      obj.dict.set(PN('ColorSpace'), PN('DeviceRGB'));
+      obj.dict.set(PN('BitsPerComponent'), PDFLib.PDFNumber.of(8));
+      obj.dict.set(PN('Length'), PDFLib.PDFNumber.of(r.bytes.length));
+      obj.dict.delete(PN('Decode'));        // 원래 색 반전 정보가 남으면 색이 뒤집힘
+      obj.dict.delete(PN('DecodeParms'));
+    }
+    // 문서 안의 사진을 모두 다시 압축한다 (실제 압축·미리보기가 함께 씀)
+    async function recompressDocImages(pdfDoc, options, onProgress, forceRender) {
+      const scan = collectImageInfos(pdfDoc, true);
+      const targets = scan.images.filter((i) => i.route);
+      const pages = new Set();
+      let done = 0, replaced = 0, failed = 0;
+      for (const info of targets) {
+        try {
+          const scale = scaleForTargetDpi(info.W, info.H, info.place, options.dpi, scan.maxSide);
+          const r = await recompressImage(pdfDoc, info, options.quality, scale, forceRender);
+          if (r) {
+            applyReplacement(info.obj, r);
+            replaced++;
+            const ps = scan.placements.pages.get(info.tag);
+            if (ps) ps.forEach((p) => pages.add(p + 1));
+          }
+        } catch (err) {
+          failed++;
+          console.warn('이미지를 처리하지 못해 원본을 유지합니다:', info.tag, err);
+        }
+        done++;
+        if (onProgress) onProgress(done, targets.length);
+      }
+      return { total: targets.length, replaced, failed, skipped: scan.images.length - targets.length, pages };
+    }
+
+    // ===== 결과 검증: 원본과 압축본의 같은 쪽을 PDF.js로 그려 밝기 분포를 비교 =====
+    // 사진이 검게 변하는 식의 오류는 쪽을 작게 그려 12×16칸의 평균 밝기를 비교하면 바로 드러난다.
+    const VERIFY = { cols: 12, rows: 16, width: 240, limit: 45 };
+    async function lumaGrid(pdf, pageNum) {
+      const page = await pdf.getPage(pageNum);
+      const vp1 = page.getViewport({ scale: 1 });
+      const canvas = await renderPageToNewCanvas(page, page.getViewport({ scale: VERIFY.width / vp1.width }));
+      const w = canvas.width, h = canvas.height;
+      const data = canvas.getContext('2d').getImageData(0, 0, w, h).data;
+      const sum = new Float64Array(VERIFY.cols * VERIFY.rows), cnt = new Float64Array(VERIFY.cols * VERIFY.rows);
+      for (let y = 0; y < h; y++) {
+        const row = Math.min(VERIFY.rows - 1, Math.floor(y * VERIFY.rows / h)) * VERIFY.cols;
+        for (let x = 0; x < w; x++) {
+          const k = (y * w + x) * 4, cell = row + Math.min(VERIFY.cols - 1, Math.floor(x * VERIFY.cols / w));
+          sum[cell] += 0.299 * data[k] + 0.587 * data[k + 1] + 0.114 * data[k + 2];
+          cnt[cell]++;
+        }
+      }
+      canvas.width = canvas.height = 0;
+      return sum.map((s, i) => (cnt[i] ? s / cnt[i] : 255));
+    }
+    function pickSamplePages(list, max) {
+      if (list.length <= max) return list.slice();
+      const out = [];
+      for (let i = 0; i < max; i++) out.push(list[Math.round(i * (list.length - 1) / (max - 1))]);
+      return [...new Set(out)];
+    }
+    async function verifyOutput(origBuf, newBytes, pageNums) {
+      if (!pageNums.length) return { ok: true, checked: 0, worst: 0, page: 0 };
+      const open = (data) => pdfjsLib.getDocument({ data, isEvalSupported: false, ...PDFJS_OPTS }).promise;
+      const a = await open(origBuf.slice(0));
+      let b = null;
+      let worst = 0, worstPage = 0;
+      try {
+        b = await open(new Uint8Array(newBytes).slice(0));
+        for (const p of pageNums) {
+          const ga = await lumaGrid(a, p), gb = await lumaGrid(b, p);
+          for (let i = 0; i < ga.length; i++) {
+            const diff = Math.abs(ga[i] - gb[i]);
+            if (diff > worst) { worst = diff; worstPage = p; }
+          }
+        }
+      } finally {
+        a.destroy();
+        if (b) b.destroy();
+      }
+      return { ok: worst <= VERIFY.limit, checked: pageNums.length, worst: Math.round(worst), page: worstPage };
+    }
+
+    // ===== 표준 압축 (pdf-lib): 사진만 다시 압축하고 글자·도형·링크는 그대로 둔다 =====
+    async function runEngine1PdfLib(buffer, options, forceRender) {
+      setProgress(15, 'PDF 객체 트리 파싱 중...');
+      const pdfDoc = await PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true });
+      if (pdfDoc.isEncrypted) throw new Error('암호가 걸린 PDF는 표준 압축을 쓸 수 없습니다. "최대 압축"을 사용해 주세요.');
+
+      pdfDoc.setTitle('');
+      pdfDoc.setAuthor('');
+      pdfDoc.setSubject('');
+      pdfDoc.setKeywords([]);
+      pdfDoc.setProducer('');
+      pdfDoc.setCreator('');
+
+      const stats = await recompressDocImages(pdfDoc, options, (done, total) => {
+        setProgress(15 + Math.round(done / Math.max(1, total) * 50),
+          `${forceRender ? '안전 모드: ' : ''}사진 압축 중 (${done} / ${total})...`);
+      }, forceRender);
+
+      setProgress(65, '페이지 트리 재구성 중...');
+      const cleanDoc = await PDFLib.PDFDocument.create();
+      const pageIndices = pdfDoc.getPageIndices();
+      const copiedPages = await cleanDoc.copyPages(pdfDoc, pageIndices);
+      copiedPages.forEach(p => cleanDoc.addPage(p));
+
+      setProgress(85, '압축 패키징 중...');
+      const bytes = await cleanDoc.save({
+        useObjectStreams: true,
+        addDefaultPage: false
+      });
+      return { bytes, stats };
+    }
+
+    // 압축한 사진이 있는 쪽 중 최대 5쪽을 원본과 비교해 색이 어긋나지 않았는지 확인한다
+    async function verifyAgainstOriginal(buffer, attempt) {
+      const pages = [...attempt.stats.pages].sort((a, b) => a - b);
+      if (!pages.length) return { ok: true, checked: 0, worst: 0, page: 0 };
+      setProgress(90, '그림 색 검증 중...');
+      return verifyOutput(buffer, attempt.bytes, pickSamplePages(pages, 5));
+    }
+
+    // 표준 압축 + 검증. 검증에 실패하면 모든 사진을 PDF.js로 디코딩하는 '안전 모드'로 한 번 더 시도하고,
+    // 그래도 어긋나면 압축하지 않고 원본을 유지한다 (bytes: null)
+    async function compressStandard(buffer, options) {
+      let attempt = await runEngine1PdfLib(buffer.slice(0), options, false);
+      let verify = await verifyAgainstOriginal(buffer, attempt);
+      let safeMode = false;
+      if (!verify.ok) {
+        console.warn('색 검증 실패 → 안전 모드로 재시도', verify);
+        safeMode = true;
+        attempt = await runEngine1PdfLib(buffer.slice(0), options, true);
+        verify = await verifyAgainstOriginal(buffer, attempt);
+      }
+      return { bytes: verify.ok ? attempt.bytes : null, stats: attempt.stats, verify, safeMode };
+    }
+    function describeStandard(r) {
+      const parts = [];
+      if (!r.bytes) {
+        parts.push(`그림 색 검증에 실패해 원본을 유지했어요 (${r.verify.page}쪽에서 색 차이 감지)`);
+      } else {
+        const s = r.stats;
+        parts.push(s.total ? `사진 ${s.replaced}/${s.total}개 압축` : '압축할 사진 없음');
+        if (s.failed) parts.push(`${s.failed}개는 처리하지 못해 원본 유지`);
+        if (r.safeMode) parts.push('색 검증 실패로 안전 모드(PDF.js 디코딩)로 재압축');
+        parts.push(r.verify.checked ? `그림 색 검증 통과(${r.verify.checked}쪽 확인)` : '색 검증 대상 없음');
+      }
+      return { engine: '표준 압축 (pdf-lib)', detail: parts.join(' · ') };
+    }
+
+    // ===== 정밀 압축 (Ghostscript WASM, 고급) =====
+    // 실패하면 표준 압축으로 대체하되, 실제로 어떤 엔진이 돌았는지와 실패 사유를 결과에 표시한다
+    async function runEngine2GhostscriptWasm(buffer, options) {
+      setProgress(15, 'WASM 엔진 불러오는 중...');
+      const pdfSettingsMap = { '72': '/screen', '150': '/ebook', '220': '/printer', '300': '/printer' };
+      const gsPreset = pdfSettingsMap[String(options.dpi)] || '/ebook';
+      let gsError = '';
+
+      try {
+        const gsBase = 'https://cdn.jsdelivr.net/npm/@jspawn/ghostscript-wasm@0.0.2/';
+        const gsModule = await import(gsBase + 'gs.mjs');
+
+        if (gsModule && typeof gsModule.default === 'function') {
+          setProgress(45, 'WASM 인스턴스 초기화 중...');
+          const gs = await gsModule.default({ locateFile: (f) => gsBase + f });
+          gs.FS.writeFile('input.pdf', new Uint8Array(buffer));
+          setProgress(70, '압축 파이프라인 실행 중...');
+
+          await gs.callMain([
+            '-sDEVICE=pdfwrite',
+            '-dCompatibilityLevel=1.5',
+            `-dPDFSETTINGS=${gsPreset}`,
+            // 프리셋의 기본 해상도(/screen 72, /ebook 150, /printer 300) 대신 고른 DPI를 그대로 적용
+            '-dDownsampleColorImages=true', '-dDownsampleGrayImages=true', '-dDownsampleMonoImages=true',
+            `-dColorImageResolution=${options.dpi}`, `-dGrayImageResolution=${options.dpi}`, `-dMonoImageResolution=${Math.max(options.dpi, 300)}`,
+            '-dNOPAUSE',
+            '-dQUIET',
+            '-dBATCH',
+            '-sOutputFile=output.pdf',
+            'input.pdf'
+          ]);
+
+          const out = gs.FS.readFile('output.pdf');
+          if (out && out.byteLength > 0) {
+            setProgress(90, '그림 색 검증 중...');
+            const all = Array.from({ length: Math.max(1, totalPages) }, (_, i) => i + 1);
+            const v = await verifyOutput(buffer, out, pickSamplePages(all, 4));
+            if (v.ok) {
+              return { bytes: out, report: { engine: '정밀 압축 (Ghostscript WASM)', detail: `그림 색 검증 통과(${v.checked}쪽 확인)` } };
+            }
+            gsError = `Ghostscript 결과의 ${v.page}쪽에서 색 차이가 감지됨`;
+          } else {
+            gsError = '출력 파일이 비어 있음';
+          }
+        } else {
+          gsError = '엔진 모듈 형식이 예상과 다름';
+        }
+      } catch (wasmErr) {
+        gsError = wasmErr && wasmErr.message ? wasmErr.message : String(wasmErr || '알 수 없는 오류');
+        console.warn('Ghostscript WASM을 쓰지 못했습니다:', wasmErr);
+      }
+
+      setProgress(45, '표준 압축으로 대체하는 중...');
+      const r = await compressStandard(buffer, options);
+      const rep = describeStandard(r);
+      return {
+        bytes: r.bytes,
+        report: { engine: '표준 압축으로 대체됨 (Ghostscript 사용 불가)', detail: `사유: ${gsError} · ${rep.detail}` }
+      };
+    }
+
+
+    async function runEngine3Rasterize(buffer, options) {
+      setProgress(10, 'PDF.js 렌더러 초기화 중...');
+      const loadingTask = pdfjsLib.getDocument({ data: buffer.slice(0), ...PDFJS_OPTS });
+      const pdf = await loadingTask.promise;
+      const numPages = pdf.numPages;
+
+      const newPdfDoc = await PDFLib.PDFDocument.create();
+      const renderScale = options.dpi / 72; // PDF.js 배율 1 = 72dpi
+
+      for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+        const pct = 15 + Math.round((pageNum / numPages) * 75);
+        setProgress(pct, `페이지 렌더링 (${pageNum} / ${numPages})...`);
+
+        const page = await pdf.getPage(pageNum);
+        const origViewport = page.getViewport({ scale: 1.0 });
+        const scaledViewport = page.getViewport({ scale: renderScale });
+
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.floor(scaledViewport.width);
+        canvas.height = Math.floor(scaledViewport.height);
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        await page.render({ canvasContext: ctx, viewport: scaledViewport }).promise;
+
+        const jpegDataUrl = canvas.toDataURL('image/jpeg', options.quality);
+        const jpgImage = await newPdfDoc.embedJpg(jpegDataUrl);
+
+        const newPage = newPdfDoc.addPage([origViewport.width, origViewport.height]);
+        newPage.drawImage(jpgImage, { x: 0, y: 0, width: origViewport.width, height: origViewport.height });
+      }
+
+      setProgress(92, 'PDF 패키징 중...');
+      return await newPdfDoc.save({ useObjectStreams: true });
+    }
+
+    compressBtn.addEventListener('click', async () => {
+      if (!currentBuffer || !currentFile) return;
+
+      compressBtn.disabled = true;
+      resultSummaryBox.classList.add('hidden');
+      setDownloadEnabled(false);
+      fileStatusBadge.textContent = '압축 진행 중...';
+
+      const options = getCurrentOptions();
+      const startTime = performance.now();
+
+      try {
+        let compressedBytes = null;
+        let report = { engine: '', detail: '' };
+
+        if (options.mode === 'FAST_PDFLIB') {
+          const r = await compressStandard(currentBuffer, options);
+          compressedBytes = r.bytes;
+          report = describeStandard(r);
+        } else if (options.mode === 'DEEP_GS_WASM') {
+          const r = await runEngine2GhostscriptWasm(currentBuffer.slice(0), options);
+          compressedBytes = r.bytes;
+          report = r.report;
+        } else if (options.mode === 'EXTREME_RASTER') {
+          compressedBytes = await runEngine3Rasterize(currentBuffer.slice(0), options);
+          report = { engine: '최대 압축 (쪽 전체 이미지화)', detail: '글자는 이미지가 되어 검색·복사가 되지 않아요' };
+        }
+
+        // 줄지 않았거나 검증에 실패했으면 원본을 그대로 돌려준다
+        let keptOriginal = false;
+        if (!compressedBytes || compressedBytes.byteLength >= currentBuffer.byteLength) {
+          compressedBytes = new Uint8Array(currentBuffer.slice(0));
+          keptOriginal = true;
+        }
+
+        const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
+        const origSize = currentBuffer.byteLength;
+        const newSize = compressedBytes.byteLength;
+        const diff = origSize - newSize;
+        const ratio = origSize > 0 ? ((diff / origSize) * 100).toFixed(1) : '0.0';
+
+        setProgress(100, `압축 완료 (${elapsed}초)`);
+        fileStatusBadge.textContent = '압축 완료';
+        compSizeMetric.textContent = formatBytes(newSize);
+        compRatioSub.textContent = diff > 0 ? `-${ratio}% 확정` : `원본 유지`;
+
+        if (currentDownloadUrl) URL.revokeObjectURL(currentDownloadUrl);
+        const outBlob = new Blob([compressedBytes], { type: 'application/pdf' });
+        currentDownloadUrl = URL.createObjectURL(outBlob);
+
+        const baseName = currentFile.name.replace(/\.pdf$/i, '');
+        downloadLink.href = currentDownloadUrl;
+        downloadLink.download = `${baseName}_compressed.pdf`;
+
+        savedBadgeText.textContent = diff > 0 ? `${ratio}% 감소 (-${formatBytes(diff)})` : `0% (원본 유지)`;
+        engineReportText.textContent = report.engine + (report.detail ? ' · ' + report.detail : '');
+        // 표준·정밀 압축으로 거의 줄지 않는 문서는 다음 선택지를 안내
+        const weak = options.mode !== 'EXTREME_RASTER' && (keptOriginal || diff / origSize < 0.05);
+        resultHintText.classList.toggle('hidden', !weak);
+        resultSummaryBox.classList.remove('hidden');
+        setDownloadEnabled(true);
+      } catch (err) {
+        console.error(err);
+        setProgress(0, '오류 발생');
+        fileStatusBadge.textContent = '오류';
+        engineReportText.textContent = '오류: ' + (err && err.message ? err.message : err);
+        resultHintText.classList.add('hidden');
+        savedBadgeText.textContent = '압축하지 못했어요';
+        resultSummaryBox.classList.remove('hidden');
+      } finally {
+        compressBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
