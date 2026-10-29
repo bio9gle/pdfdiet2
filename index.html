@@ -37,6 +37,48 @@
       background: #94a3b8;
     }
   </style>
+  <!-- ===== 복사·소스 보기 방지 (기능과 무관한 보호 코드) =====
+       주의: 브라우저는 소스를 받아서 실행하므로 완전한 차단은 불가능하며, 일반 사용자의 손쉬운 복사를 막는 수준입니다. -->
+  <script>
+    (function () {
+      try {
+        // 입력창·선택 상자는 정상 동작해야 하므로 보호 대상에서 제외
+        function isFormField(t) {
+          return !!(t && t.closest && t.closest('input, select, textarea, [contenteditable="true"]'));
+        }
+        function block(e) { e.preventDefault(); return false; }
+
+        // 마우스 우클릭 메뉴 차단
+        document.addEventListener('contextmenu', block);
+
+        // 글자 선택·복사·잘라내기·끌어가기 차단 (입력창 제외)
+        ['selectstart', 'copy', 'cut', 'dragstart'].forEach(function (type) {
+          document.addEventListener(type, function (e) {
+            if (!isFormField(e.target)) e.preventDefault();
+          });
+        });
+
+        // 소스 보기·개발자 도구·저장 단축키 차단
+        document.addEventListener('keydown', function (e) {
+          var k = (e.key || '').toLowerCase();
+          var ctrl = e.ctrlKey || e.metaKey;
+          if (e.key === 'F12') return block(e);                                   // 개발자 도구
+          if (ctrl && !e.shiftKey && (k === 'u' || k === 's')) return block(e);  // 소스 보기 / 저장
+          if (ctrl && e.shiftKey && (k === 'i' || k === 'j' || k === 'c')) return block(e); // 개발자 도구
+          if (e.metaKey && e.altKey && (k === 'u' || k === 'i' || k === 'j')) return block(e); // macOS
+          if (ctrl && !e.shiftKey && k === 'c' && !isFormField(e.target)) return block(e);   // 복사
+        });
+
+        // 글자 선택 표시 자체를 없앰 (입력창은 제외)
+        var style = document.createElement('style');
+        style.textContent =
+          'body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}' +
+          'input,select,textarea{-webkit-user-select:text;user-select:text}' +
+          'img{-webkit-user-drag:none;user-drag:none}';
+        document.head.appendChild(style);
+      } catch (err) { /* 보호 코드가 실패해도 앱 기능에는 영향 없음 */ }
+    })();
+  </script>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
   <!-- Header -->
